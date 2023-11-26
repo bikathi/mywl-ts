@@ -1,19 +1,3 @@
-<script setup>
-	definePageMeta({
-		name: 'open-issues',
-	});
-
-	const loadingMoreIssues = ref(false);
-	const loadMoreIssues = () => {
-		loadingMoreIssues.value = true;
-
-		setTimeout(() => {
-			// load more comments from the server
-			loadingMoreIssues.value = false;
-		}, 3000);
-	};
-</script>
-
 <template>
 	<main>
 		<div class="mb-4">
@@ -54,3 +38,19 @@
 		</div>
 	</main>
 </template>
+
+<script setup lang="ts">
+	definePageMeta({
+		name: 'open-issues',
+	});
+
+	const loadingMoreIssues: Ref<boolean> = ref(false);
+	const loadMoreIssues = (): void => {
+		loadingMoreIssues.value = true;
+
+		setTimeout(() => {
+			// load more comments from the server
+			loadingMoreIssues.value = false;
+		}, 3000);
+	};
+</script>

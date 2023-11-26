@@ -65,3 +65,5 @@
 	</div>
 	<!-- End Textarea -->
 </template>
+
+<script setup lang="ts"></script>

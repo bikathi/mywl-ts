@@ -1,5 +1,3 @@
-<script setup></script>
-
 <template>
 	<div class="flex flex-col">
 		<div class="-m-1.5 overflow-x-auto">
@@ -123,3 +121,5 @@
 		</div>
 	</div>
 </template>
+
+<script setup lang="ts"></script>

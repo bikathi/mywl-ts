@@ -1,9 +1,3 @@
-<script setup lang="js">
-	definePageMeta({
-		name: "application-home",
-	});
-</script>
-
 <template>
 	<div
 		class="flex items-center flex-col h-screen dark:bg-slate-900 dark:text-white justify-center px-2">
@@ -55,3 +49,9 @@
 		</div>
 	</div>
 </template>
+
+<script setup lang="ts">
+	definePageMeta({
+		name: "application-home",
+	});
+</script>

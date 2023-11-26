@@ -1,10 +1,3 @@
-<script setup>
-	definePageMeta({
-		name: 'general-settings',
-		layout: 'dashboard-layout',
-	});
-</script>
-
 <template>
 	<main>
 		<div class="mb-2">
@@ -113,3 +106,10 @@
 		</button>
 	</main>
 </template>
+
+<script setup lang="ts">
+	definePageMeta({
+		name: 'general-settings',
+		layout: 'dashboard-layout',
+	});
+</script>

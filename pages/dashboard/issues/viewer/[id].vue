@@ -1,23 +1,3 @@
-<script setup>
-	definePageMeta({
-		layout: 'dashboard-layout',
-		name: 'issue-viewer',
-	});
-
-	// reactive variables
-	const loadingMoreComments = ref(false);
-
-	// functions
-	const loadMoreComments = async () => {
-		loadingMoreComments.value = true;
-
-		setTimeout(() => {
-			// load more comments from the server
-			loadingMoreComments.value = false;
-		}, 3000);
-	};
-</script>
-
 <template>
 	<main>
 		<h1 class="text-4xl">
@@ -129,3 +109,23 @@
 		<CommentForm />
 	</main>
 </template>
+
+<script setup lang="ts">
+	definePageMeta({
+		layout: 'dashboard-layout',
+		name: 'issue-viewer',
+	});
+
+	// reactive variables
+	const loadingMoreComments: Ref<boolean> = ref(false);
+
+	// functions
+	const loadMoreComments = async (): Promise<void> => {
+		loadingMoreComments.value = true;
+
+		setTimeout(() => {
+			// load more comments from the server
+			loadingMoreComments.value = false;
+		}, 3000);
+	};
+</script>
