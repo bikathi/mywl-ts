@@ -1,14 +1,6 @@
 <template>
 	<main>
 		<div class="mb-4">
-			<h1 class="text-2xl font-bold mb-2">Insights</h1>
-			<!-- Component for showing issue metrics -->
-			<div
-				class="flex flex-col lg:flex-row space-x-0 lg:space-x-4 space-y-4 lg:space-y-0">
-				<IssueMetric />
-				<IssueMetric />
-				<IssueMetric />
-			</div>
 			<h1 class="text-2xl font-bold mt-4 mb-2">Open Issues</h1>
 			<!-- table to show the open issues -->
 			<IssueTable />
