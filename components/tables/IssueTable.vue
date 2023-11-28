@@ -16,7 +16,7 @@
 								<th
 									scope="col"
 									class="issue-table-headers">
-									Assignee
+									Technician/ Handler
 								</th>
 								<th
 									scope="col"
@@ -39,22 +39,33 @@
 										v-html="svg"
 										class="w-10 h-10 rounded-full"></span>
 									<span class="inline-flex flex-col">
-										<span>Example Title</span>
+										<span>{{ title }}</span>
 										<span
 											class="text-xs font-bold text-gray-500 uppercase"
-											>Solomon Xander</span
+											>{{ clientName }}</span
 										>
 									</span>
 								</td>
 								<td
 									class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-									Solomon Xander
+									{{ assignee }}
 								</td>
 								<td
 									class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 inline-flex items-center space-x-2">
 									<span
-										class="w-3 h-3 block rounded-full bg-orange-400"></span>
-									<span>Inactive</span>
+										class="w-3 h-3 block rounded-full bg-orange-400"
+										v-if="
+											issueStatus === 'Inactive'
+										"></span>
+									<span
+										class="w-3 h-3 block rounded-full bg-green-400"
+										v-else-if="
+											issueStatus === 'Active'
+										"></span>
+									<span
+										class="w-3 h-3 block rounded-full bg-purple-400"
+										v-else></span>
+									<span>{{ issueStatus }}</span>
 								</td>
 								<td
 									class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
@@ -83,6 +94,14 @@
 <script setup lang="ts">
 	import { createAvatar, type Result } from '@dicebear/core';
 	import { thumbs } from '@dicebear/collection';
+	export interface Props {
+		title: string;
+		clientName: string;
+		assignee: string;
+		status: string; // active, inactive, closed
+		id: string;
+	}
+
 	// Avatar seed Strings
 	const seeds: Array<string> = [
 		'Johnston',
@@ -97,6 +116,19 @@
 		radius: 80,
 	});
 	const svg: string = avatar.toString();
+	const componentProps = withDefaults(defineProps<Props>(), {});
+	const issueStatus: string = await assignStatus();
+
+	async function assignStatus(): Promise<string> {
+		if (componentProps.status === 'active') {
+			return 'Active';
+		} else if (componentProps.status === 'inactive') {
+			return 'Inactive';
+		} else {
+			return 'Closed';
+		}
+	}
+
 	function selectRandomString(): string {
 		return seeds[Math.floor(Math.random() * seeds.length)];
 	}
