@@ -16,7 +16,7 @@
 								<th
 									scope="col"
 									class="issue-table-headers">
-									Technician/ Handler
+									Technician / Handler
 								</th>
 								<th
 									scope="col"
@@ -25,8 +25,8 @@
 								</th>
 								<th
 									scope="col"
-									class="issue-table-headers text-center">
-									Action
+									class="issue-table-headers">
+									Opened By
 								</th>
 							</tr>
 						</thead>
@@ -37,12 +37,21 @@
 									class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200 inline-flex items-center space-x-2">
 									<span
 										v-html="svg"
-										class="w-10 h-10 rounded-full"></span>
+										class="w-8 h-8 rounded-full"></span>
 									<span class="inline-flex flex-col">
-										<span>{{ title }}</span>
+										<NuxtLink
+											class="hover:underline underline-offset-2"
+											:to="{
+												name: 'issue-viewer',
+												params: {
+													id: id,
+												},
+											}"
+											>{{ title }}</NuxtLink
+										>
 										<span
 											class="text-xs font-bold text-gray-500 uppercase"
-											>{{ clientName }}</span
+											>by {{ clientName }}</span
 										>
 									</span>
 								</td>
@@ -68,19 +77,14 @@
 									<span>{{ issueStatus }}</span>
 								</td>
 								<td
-									class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-									<NuxtLink
-										:to="{
-											name: 'issue-viewer',
-											params: {
-												// TODO: modify this later
-												id: 1,
-											},
-										}"
-										type="button"
-										class="table-action-buttons">
-										View
-									</NuxtLink>
+									class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+									<span class="inline-flex flex-col">
+										<span>{{ openedBy }}</span>
+										<span
+											class="text-xs font-medium lowercase text-gray-500"
+											>on {{ date }}</span
+										>
+									</span>
 								</td>
 							</tr>
 						</tbody>
@@ -100,6 +104,8 @@
 		assignee: string;
 		status: string; // active, inactive, closed
 		id: string;
+		date: string;
+		openedBy: string;
 	}
 
 	// Avatar seed Strings
