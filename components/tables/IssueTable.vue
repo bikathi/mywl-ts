@@ -40,7 +40,7 @@
 										class="w-8 h-8 rounded-full"></span>
 									<span class="inline-flex flex-col">
 										<NuxtLink
-											class="hover:underline underline-offset-2"
+											class="hover:underline underline-offset-2 "
 											:to="{
 												name: 'issue-viewer',
 												params: {
@@ -109,7 +109,7 @@
 	}
 
 	// Avatar seed Strings
-	const seeds: Array<string> = [
+	const seeds: readonly string[] = [
 		'Johnston',
 		'Anderson',
 		'Cleopatra',
