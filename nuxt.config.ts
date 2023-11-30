@@ -36,6 +36,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'nuxt-icon',
     '@vueuse/nuxt',
+    '@samk-dev/nuxt-vcalendar',
   ],
   pinia: {
     autoImports: [
