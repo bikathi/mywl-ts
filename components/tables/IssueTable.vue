@@ -32,7 +32,9 @@
 						</thead>
 						<tbody
 							class="divide-y divide-gray-200 dark:divide-gray-700">
-							<tr v-for="a in 5">
+							<tr
+								v-for="a in 5"
+								class="group">
 								<td
 									class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200 inline-flex items-center space-x-2">
 									<span
@@ -40,7 +42,7 @@
 										class="w-8 h-8 rounded-full"></span>
 									<span class="inline-flex flex-col">
 										<NuxtLink
-											class="hover:underline underline-offset-2 "
+											class="hover:underline underline-offset-2 group-hover:underline"
 											:to="{
 												name: 'issue-viewer',
 												params: {
