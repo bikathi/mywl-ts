@@ -41,6 +41,7 @@
     "pinia": "^2.1.4",
     "preline": "^2.0.0",
     "prettier": "^2.8.8",
-    "vue-eslint-parser": "^8.3.0"
+    "vue-eslint-parser": "^8.3.0",
+    "vuedraggable": "^4.1.0"
   }
 }
