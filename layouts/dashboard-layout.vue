@@ -135,3 +135,12 @@
 		scrollbar-width: none; /* Firefox */
 	}
 </style>
+
+<style scoped>
+	.router-link-active {
+		color: rgb(37 99 235);
+		text-decoration: underline;
+		text-decoration-thickness: 2px;
+		text-underline-offset: 4px;
+	}
+</style>
