@@ -1,6 +1,6 @@
 <template>
 	<div class="overflow-x-hidden">
-		<div class="border-b pb-4 my-4 flex justify-between">
+		<div class="border-b pb-4 my-4 flex justify-between items-center">
 			<h1 class="text-3xl">Issue Tracking</h1>
 			<button
 				type="button"
