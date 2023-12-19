@@ -2,7 +2,7 @@
 	<img
 		class="inline-block h-[2.375rem] w-[2.375rem] rounded-full"
 		:src="props.link"
-		alt="Image Description" />
+		alt="user-avatar" />
 </template>
 
 <script setup lang="ts">
