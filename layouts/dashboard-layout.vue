@@ -3,7 +3,7 @@
 		class="h-screen flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded-full dark:scrollbar-track-slate-900">
 		<div
 			class="border-b border-gray-200 dark:bg-slate-900 dark:border-gray-700 dark:text-white">
-			<nav class="flex items-center justify-between px-2 lg:px-48">
+			<nav class="flex items-center justify-between px-2 lg:px-56">
 				<h1 class="text-xl sm:text-2xl lg:text-3xl font-bold">
 					Poa Internet
 				</h1>
@@ -81,7 +81,7 @@
 					</div>
 				</div>
 			</nav>
-			<nav class="flex space-x-2 px-2 md:px-48 overflow-x-auto">
+			<nav class="flex space-x-2 px-2 lg:px-56 overflow-x-auto">
 				<NuxtLink
 					:to="{ name: 'issues-home' }"
 					type="button"
@@ -111,7 +111,7 @@
 		</div>
 
 		<div
-			class="dark:bg-slate-900 dark:border-gray-700 dark:text-white flex-grow px-2 md:px-48">
+			class="dark:bg-slate-900 dark:border-gray-700 dark:text-white flex-grow px-2 lg:px-56">
 			<slot />
 		</div>
 		<!-- for the notification sidebar component -->
