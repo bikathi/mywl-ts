@@ -109,7 +109,7 @@
 			</nav>
 		</div>
 		<div
-			class="dark:bg-green-500 dark:border-gray-700 dark:text-white grow px-2 lg:px-56">
+			class="dark:bg-slate-900 dark:border-gray-700 dark:text-white grow px-2 lg:px-56">
 			<slot />
 		</div>
 		<!-- for the notification sidebar component -->
