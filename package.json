@@ -39,7 +39,7 @@
     "epic-spinners": "^2.0.0",
     "eslint": "^8.44.0",
     "pinia": "^2.1.4",
-    "preline": "^2.0.0",
+    "preline": "^2.0.2",
     "prettier": "^2.8.8",
     "vue-eslint-parser": "^8.3.0",
     "vuedraggable": "^4.1.0"
