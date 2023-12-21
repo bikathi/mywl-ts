@@ -4,11 +4,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       script: [
-        {
-          src: '/preline/dist/preline.js',
-          body: true,
-          defer: true
-        }
+        
       ]
     }
   },
@@ -30,6 +26,7 @@ export default defineNuxtConfig({
       src: "~/plugins/preAppStart.js", 
       mode: "client" 
     },
+    "~/plugins/preline.client.ts"
   ],
   css: ['~/assets/css/tailwind.css'],
   modules: [
