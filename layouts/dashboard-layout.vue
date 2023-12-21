@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="h-screen min-h-screen flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded-full dark:scrollbar-track-slate-900">
+		class="flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded-full dark:scrollbar-track-slate-900">
 		<div
 			class="border-b border-gray-200 dark:bg-slate-900 dark:border-gray-700 dark:text-white">
 			<nav class="flex items-center justify-between px-2 lg:px-56">
@@ -8,7 +8,7 @@
 					Poa Internet
 				</h1>
 				<div
-					class="hs-dropdown relative inline-flex items-center space-x-2 mt-2">
+					class="hs-dropdown inline-flex items-center space-x-2 mt-2">
 					<button
 						type="button"
 						class="p-1 text-white"
@@ -22,24 +22,15 @@
 						id="hs-dropdown-with-icons"
 						type="button"
 						class="hs-dropdown-toggle py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-full border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800">
+						<Icon
+							name="mdi:menu-down"
+							color="currentColor"
+							size="23"
+							class="hs-dropdown-open:rotate-180" />
 						<img
 							src="/images/random-person-image.webp"
 							alt="user-image"
-							class="object-cover h-6 lg:h-8 w-6 lg:w-8 rounded-full" />
-						Bikathi Martin
-						<svg
-							class="hs-dropdown-open:rotate-180 w-4 h-4"
-							xmlns="http://www.w3.org/2000/svg"
-							width="24"
-							height="24"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round">
-							<path d="m6 9 6 6 6-6" />
-						</svg>
+							class="object-cover h-6 lg:h-7 w-6 lg:w-7 rounded-full" />
 					</button>
 					<div
 						class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-[15rem] bg-white shadow-md rounded-lg p-2 mt-2 divide-y divide-gray-200 dark:bg-gray-800 dark:border dark:border-gray-700 dark:divide-gray-700"
@@ -51,7 +42,10 @@
 								<span>martbikathi@gmail.com</span>
 							</div>
 							<button
-								class="flex items-center gap-x-3.5 w-full py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700">
+								class="flex items-center gap-x-3.5 w-full py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700"
+								@click.prevent="
+									async () => await toggleThemeChange()
+								">
 								<Icon
 									name="ri:lightbulb-flash-line"
 									color="currentColor"
@@ -116,6 +110,29 @@
 		<NotificationSidebar />
 	</div>
 </template>
+
+<script setup lang="ts">
+	onMounted(() => {
+		const htmlTag = document.documentElement;
+		// here, we will assign the correct class based on the user's settings
+		const prefferedThemeClass = 'light'; // light or dark
+		htmlTag.classList.add(prefferedThemeClass);
+	});
+
+	async function toggleThemeChange(): Promise<void> {
+		const htmlTag = document.documentElement;
+		// change the theme based on some logic - were looking at the current value of `class=`
+		if (htmlTag.classList.contains('dark')) {
+			htmlTag.classList.remove('dark');
+			htmlTag.classList.add('light');
+		} else if (htmlTag.classList.contains('light')) {
+			htmlTag.classList.remove('light');
+			htmlTag.classList.add('dark');
+		}
+
+		// also save the user's prefference to their settings file
+	}
+</script>
 
 <style>
 	::-webkit-scrollbar-thumb {

@@ -143,7 +143,7 @@
 						id="user-department"
 						class="mt-2 px-4 py-3 block w-full bg-gray-100 border-transparent rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-700 dark:border-transparent dark:text-gray-400 dark:focus:ring-gray-600">
 						<option selected>
-							Select a Designated Department for the User
+							Select User's Department
 						</option>
 						<option>DEPARTMENT_A</option>
 						<option>DEPARTMENT_B</option>
