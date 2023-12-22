@@ -78,7 +78,7 @@
 					:to="{ name: 'issues-home' }"
 					type="button"
 					class="hs-tab-active:font-semibold hs-tab-active:border-blue-600 hs-tab-active:text-blue-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:text-blue-500">
-					Tasks & Issues
+					Issue Monitor
 				</NuxtLink>
 				<NuxtLink
 					:to="{ name: 'user-manager' }"
@@ -91,7 +91,7 @@
 					:to="{ name: 'projects-home' }"
 					type="button"
 					class="hs-tab-active:font-semibold hs-tab-active:border-blue-600 hs-tab-active:text-blue-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:text-blue-500">
-					Project Tracker
+					Projects Tracker
 				</NuxtLink>
 				<NuxtLink
 					:to="{ name: 'user-calendar' }"
@@ -114,7 +114,7 @@
 	onMounted(() => {
 		const htmlTag = document.documentElement;
 		// here, we will assign the correct class based on the user's settings
-		const prefferedThemeClass = 'light'; // light or dark
+		const prefferedThemeClass = 'dark'; // light or dark
 		htmlTag.classList.add(prefferedThemeClass);
 	});
 
