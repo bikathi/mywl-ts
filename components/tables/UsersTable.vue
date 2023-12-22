@@ -38,7 +38,7 @@
 					<span class="inline-flex flex-col">
 						<span>John Doe</span>
 						<span
-							class="text-xs bg-gray-100 dark:bg-slate-800 dark:text-gray-400 text-opacity-80 p-1 rounded-md"
+							class="text-xs bg-gray-200 dark:bg-slate-800 dark:text-gray-400 text-opacity-80 p-1 rounded-md"
 							>johndoe@gmail.com</span
 						>
 					</span>
