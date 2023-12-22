@@ -1,22 +1,21 @@
 <template>
 	<div
-		class="flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded-full dark:scrollbar-track-slate-900">
+		class="min-h-screen flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded-full dark:scrollbar-track-slate-900">
 		<div
-			class="border-b border-gray-200 dark:bg-slate-900 dark:border-gray-700 dark:text-white">
-			<nav class="flex items-center justify-between px-2 lg:px-56">
-				<h1 class="text-xl sm:text-2xl lg:text-3xl font-bold">
-					Poa Internet
-				</h1>
-				<div
-					class="hs-dropdown inline-flex items-center space-x-2 mt-2">
+			class="border-b border-gray-200 dark:bg-slate-900 dark:border-gray-700 dark:text-white h-[11%]">
+			<nav
+				class="flex items-center justify-between px-2 lg:px-56 h-full py-2">
+				<h1 class="text-2xl lg:text-3xl font-bold">Poa Internet</h1>
+				<div class="hs-dropdown inline-flex items-center space-x-2">
 					<button
 						type="button"
-						class="p-1 text-white"
+						class="p-1 dark:text-white"
 						data-hs-overlay="#hs-overlay-example">
 						<Icon
 							name="ri:notification-2-fill"
 							color="currentColor"
-							size="23" />
+							size="23"
+							class="" />
 					</button>
 					<button
 						id="hs-dropdown-with-icons"
