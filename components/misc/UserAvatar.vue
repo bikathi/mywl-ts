@@ -1,6 +1,9 @@
 <template>
 	<img
-		class="inline-block h-[2.375rem] w-[2.375rem] rounded-full"
+		class="inline-block rounded-full"
+		:class="
+			$props.dimensions ? props.dimensions : 'h-[2.375rem] w-[2.375rem]'
+		"
 		:src="props.link"
 		alt="user-avatar" />
 </template>
@@ -8,6 +11,7 @@
 <script setup lang="ts">
 	export interface Props {
 		link?: string;
+		dimensions?: string[];
 	}
 
 	const props = withDefaults(defineProps<Props>(), {
