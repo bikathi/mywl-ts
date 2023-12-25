@@ -111,13 +111,6 @@
 </template>
 
 <script setup lang="ts">
-	onMounted(() => {
-		const htmlTag = document.documentElement;
-		// here, we will assign the correct class based on the user's settings
-		const prefferedThemeClass = 'dark'; // light or dark
-		htmlTag.classList.add(prefferedThemeClass);
-	});
-
 	async function toggleThemeChange(): Promise<void> {
 		const htmlTag = document.documentElement;
 		// change the theme based on some logic - were looking at the current value of `class=`
