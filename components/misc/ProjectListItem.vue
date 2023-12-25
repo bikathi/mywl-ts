@@ -11,8 +11,8 @@
 		<td
 			class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 text-center">
 			<span class="inline-flex flex-col text-start">
-				<span>Example Project Title</span>
-				<span>Project Category &middot; Project Sub-Category</span>
+				<span class="dark:text-gray-400 text-opacity-80 antialiased font-medium">Example Project Title</span>
+				<span class="text-sm">Project Category &middot; Project Sub-Category</span>
 			</span>
 		</td>
 
@@ -21,7 +21,10 @@
 			class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
 			<span class="inline-flex flex-col">
 				<span>25th December 2023</span>
-				<span>10 Contributors</span>
+				<span
+					class="w-fit text-xs bg-gray-200 dark:bg-slate-800 dark:text-gray-400 text-opacity-80 p-1 rounded-md"
+					>10 Contributors</span
+				>
 			</span>
 		</td>
 		<td
@@ -79,7 +82,8 @@
 		</td>
 		<td
 			class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 text-end">
-			<button
+			<NuxtLink
+				:to="{ name: 'project-playground', params: { id: 1 } }"
 				type="button"
 				class="py-2 rounded-full px-4 inline-flex items-center gap-x-2 text-sm font-semibold border border-transparent bg-blue-600 text-white hover:bg-blue-700"
 				data-hs-overlay="#hs-basic-modal">
@@ -88,7 +92,7 @@
 					color="currentColor"
 					size="19" />
 				Open
-			</button>
+			</NuxtLink>
 		</td>
 	</tr>
 </template>
