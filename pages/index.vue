@@ -10,25 +10,25 @@
 				</h3>
 				<div>
 					<label
-						for="input-label"
+						for="username"
 						class="block text-sm font-medium mb-2 dark:text-white"
-						>Email</label
+						>Username</label
 					>
 					<input
-						type="email"
-						id="input-label"
+						type="text"
+						id="username"
 						class="py-3 px-4 block w-full border rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
 						placeholder="you@site.com" />
 				</div>
 				<div>
 					<label
-						for="input-label"
+						for="password"
 						class="block text-sm font-medium mb-2 dark:text-white"
 						>Password</label
 					>
 					<input
 						type="password"
-						id="input-label"
+						id="password"
 						class="py-3 px-4 block w-full border rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
 						placeholder="super secret password" />
 				</div>
@@ -52,6 +52,6 @@
 
 <script setup lang="ts">
 	definePageMeta({
-		name: "application-home",
+		name: 'application-home',
 	});
 </script>
