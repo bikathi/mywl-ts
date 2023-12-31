@@ -21,11 +21,6 @@ export default defineNuxtConfig({
     },
   },
   plugins: [
-    { 
-      ssr: false, 
-      src: "~/plugins/preAppStart.js", 
-      mode: "client" 
-    },
     "~/plugins/preline.client.ts"
   ],
   css: ['~/assets/css/tailwind.css'],
