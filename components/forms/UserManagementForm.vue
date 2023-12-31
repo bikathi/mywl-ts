@@ -36,14 +36,14 @@
 					</div>
 					<div class="w-full lg:w-1/2">
 						<label
-							for="client-name"
+							for="other-name"
 							class="block text-sm font-medium mb-1 dark:text-white"
 							>Other Name</label
 						>
 						<input
 							type="text"
 							maxlength="50"
-							id="client-name"
+							id="other-name"
 							class="py-3 px-4 block w-full border rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
 							placeholder="e.g Doe" />
 					</div>
@@ -65,16 +65,16 @@
 					</div>
 					<div class="w-full lg:w-1/2">
 						<label
-							for="user-email"
+							for="email-address"
 							class="block text-sm font-medium mb-1 dark:text-white"
 							>Email Address</label
 						>
 						<input
 							type="email"
 							maxlength="50"
-							id="user-email"
+							id="email-address"
 							class="py-3 px-4 block w-full border rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
-							placeholder="Doe" />
+							placeholder="johndoe@mymail.com" />
 					</div>
 				</div>
 				<div class="w-full mt-4">
@@ -142,9 +142,7 @@
 					<select
 						id="user-department"
 						class="mt-2 px-4 py-3 block w-full bg-gray-100 border-transparent rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-700 dark:border-transparent dark:text-gray-400 dark:focus:ring-gray-600">
-						<option selected>
-							Select User's Department
-						</option>
+						<option selected>Select User's Department</option>
 						<option>DEPARTMENT_A</option>
 						<option>DEPARTMENT_B</option>
 						<option>DEPARTMENT_C</option>
