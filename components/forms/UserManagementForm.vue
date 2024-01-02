@@ -50,6 +50,21 @@
 				</div>
 				<div
 					class="flex flex-col lg:flex-row space-x-0 lg:space-x-4 mt-4">
+					<div class="w-full">
+						<label
+							for="username"
+							class="block text-sm font-medium mb-1 dark:text-white"
+							>@Username</label
+						>
+						<input
+							type="text"
+							id="username"
+							class="py-3 px-4 block w-full border rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
+							placeholder="e.g. John" />
+					</div>
+				</div>
+				<div
+					class="flex flex-col lg:flex-row space-x-0 lg:space-x-4 mt-4">
 					<div class="w-full lg:w-1/2">
 						<label
 							for="user-id"
@@ -147,6 +162,39 @@
 						<option>DEPARTMENT_B</option>
 						<option>DEPARTMENT_C</option>
 					</select>
+				</div>
+				<div class="grid grid-cols-2 gap-x-2 mt-4">
+					<h1
+						class="text-sm font-medium dark:text-white col-span-2 my-1">
+						Account Status
+					</h1>
+					<label
+						for="hs-vertical-radio-in-form"
+						class="flex p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400">
+						<input
+							type="radio"
+							name="account-status"
+							class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+							id="hs-vertical-radio-in-form" />
+						<span
+							class="text-sm text-gray-500 ms-3 dark:text-gray-400"
+							>Account Enabled</span
+						>
+					</label>
+					<label
+						for="hs-vertical-radio-checked-in-form"
+						class="flex p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400">
+						<input
+							type="radio"
+							name="account-status"
+							class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+							id="hs-vertical-radio-checked-in-form"
+							checked />
+						<span
+							class="text-sm text-gray-500 ms-3 dark:text-gray-400"
+							>Account Disabled</span
+						>
+					</label>
 				</div>
 			</div>
 		</div>
