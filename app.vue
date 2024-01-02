@@ -5,11 +5,10 @@
 		</NuxtLayout>
 
 		<div
-			class="bg-gray-800 text-sm text-white rounded-lg p-4 dark:bg-white dark:text-gray-800 fixed bottom-5 left-3"
+			class="bg-blue-800 text-sm text-white rounded-lg p-4 fixed bottom-5 left-3"
 			role="alert"
-			v-if="showAlert">
-			<span class="font-bold">Dark</span> alert! You should check in on
-			some of those fields below.
+			v-if="displayAlert">
+			<span class="font-semibold">{{ alertMessage }}</span>
 		</div>
 	</main>
 </template>
@@ -21,7 +20,7 @@
 	});
 	const route = useRoute();
 	const router = useRouter();
-	const showAlert = ref(true);
+	const { displayAlert, alertMessage, openAlert } = useAlert();
 	// if (!csrfCookie.value) {
 	// 	console.log('CSRF-COOKIE does not exist');
 	// 	if (route.name != 'application-home') {
