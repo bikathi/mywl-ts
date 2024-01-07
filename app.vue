@@ -14,26 +14,6 @@
 </template>
 
 <script setup lang="ts">
-	const csrfCookie = useCookie('CSRF-TOKEN', {
-		watch: false,
-		httpOnly: true,
-	});
-	const route = useRoute();
-	const router = useRouter();
-	const { displayAlert, alertMessage, openAlert } = useAlert();
-	// if (!csrfCookie.value) {
-	// 	console.log('CSRF-COOKIE does not exist');
-	// 	if (route.name != 'application-home') {
-	// 		router.push({ name: 'application-home', force: true });
-	// 		// window.location.reload();
-
-	// 		console.log('Pushed user to application home');
-	// 	}
-
-	// 	const cookie = generateCSRFToken();
-	// 	csrfCookie.value = cookie;
-	// }
-
 	function generateCSRFToken(a: string = ''): string {
 		return a
 			? ((Number(a) ^ (Math.random() * 16)) >> (Number(a) / 4)).toString(
@@ -44,18 +24,4 @@
 					generateCSRFToken,
 			  );
 	}
-
-	onBeforeMount(() => {
-		const htmlTag = document.documentElement;
-		// TODO: here, we will assign the correct class based on the user's settings
-		const prefferedThemeClass = 'dark'; // light or dark
-		htmlTag.classList.add(prefferedThemeClass);
-	});
-
-	onMounted(() => {
-		if (csrfCookie.value) {
-			console.log('on mounted => cookie exists');
-			console.log('on mounted => cookie value: ', csrfCookie.value);
-		}
-	});
 </script>
