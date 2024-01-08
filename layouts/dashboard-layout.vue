@@ -37,8 +37,8 @@
 						<div class="py-2 first:pt-0 last:pb-0">
 							<div
 								class="text-sm dark:bg-gray-700 my-2 tracking-wide dark:border dark:border-gray-700 flex flex-col p-2 rounded-lg">
-								<span>Bikathi Martin</span>
-								<span>martbikathi@gmail.com</span>
+								<span>{{ username }}</span>
+								<span>{{ email }}</span>
 							</div>
 							<button
 								class="flex items-center gap-x-3.5 w-full py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700"
@@ -111,6 +111,11 @@
 </template>
 
 <script setup lang="ts">
+	import { usePrincipal } from '~/stores/usePrincipal';
+	const { getDetails } = usePrincipal();
+	const username = ref('John Doe');
+	const email = ref('johndoe@mymail.com');
+
 	async function toggleThemeChange(): Promise<void> {
 		const htmlTag = document.documentElement;
 		// change the theme based on some logic - were looking at the current value of `class=`
@@ -124,6 +129,11 @@
 
 		// also save the user's prefference to their settings file
 	}
+
+	onBeforeMount(() => {
+		username.value = `${getDetails.firstName} ${getDetails.otherName}`;
+		email.value = getDetails.email;
+	});
 </script>
 
 <style>
