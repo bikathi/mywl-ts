@@ -57,6 +57,7 @@
 </template>
 
 <script setup lang="ts">
+	import { usePrincipal } from '~/stores/usePrincipal';
 	definePageMeta({
 		name: 'application-home',
 	});
@@ -64,7 +65,7 @@
 		username: '',
 		password: '',
 	});
-	const { openAlert } = useAlert();
+	const { openAlert, displayAlert } = useAlert();
 	const authToken = useCookie('AUTH-TOKEN', {
 		watch: true,
 		httpOnly: false,
@@ -73,6 +74,8 @@
 		watch: true,
 		httpOnly: false,
 	});
+	const { setDetails } = usePrincipal();
+	const router = useRouter();
 
 	async function loginUser() {
 		await useFetch('http://localhost:8080/api/v1/auth/signin', {
@@ -83,6 +86,7 @@
 			},
 			body: JSON.stringify(signInRequest),
 			async onRequestError() {
+				// TODO: Fixup issues with alert box
 				openAlert(
 					'Oops! Something went wrong. Please try again.',
 					'danger',
@@ -90,7 +94,6 @@
 			},
 			async onResponse({ response }) {
 				if (response.status === 401) {
-					console.log('response is 401');
 					openAlert('Authentication failed.', 'danger');
 				} else if (response.status === 200) {
 					const responseData = response._data;
@@ -100,6 +103,10 @@
 					// once credentials are set in the cookies, null them out and save the rest in the store
 					responseData.data.authToken = null;
 					responseData.data.csrfToken = null;
+
+					await setDetails(responseData.data).then(() =>
+						router.push({ name: 'open-issues' }),
+					);
 				}
 			},
 		});
