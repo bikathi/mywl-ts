@@ -65,20 +65,24 @@
 		username: '',
 		password: '',
 	});
-	const { openAlert, displayAlert } = useAlert();
+	const { openToast } = useToast();
 	const authToken = useCookie('AUTH-TOKEN', {
 		watch: true,
 		httpOnly: false,
+		domain: 'localhost',
+		path: '/',
 	});
-	const csrfToken = useCookie('X-CSRF-TOKEN', {
+	const csrfToken = useCookie('CSRF-TOKEN', {
 		watch: true,
 		httpOnly: false,
+		domain: 'localhost',
+		path: '/',
 	});
 	const { setDetails } = usePrincipal();
 	const router = useRouter();
 
 	async function loginUser() {
-		await useFetch('http://localhost:8080/api/v1/auth/signin', {
+		await useFetch('/api/v1/auth/signin', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -87,14 +91,11 @@
 			body: JSON.stringify(signInRequest),
 			async onRequestError() {
 				// TODO: Fixup issues with alert box
-				openAlert(
-					'Oops! Something went wrong. Please try again.',
-					'danger',
-				);
+				openToast('Something went wrong. Please try again.', 'danger');
 			},
 			async onResponse({ response }) {
 				if (response.status === 401) {
-					openAlert('Authentication failed.', 'danger');
+					openToast('Authentication failed.', 'warning');
 				} else if (response.status === 200) {
 					const responseData = response._data;
 					authToken.value = responseData.data.authToken;
@@ -104,6 +105,7 @@
 					responseData.data.authToken = null;
 					responseData.data.csrfToken = null;
 
+					openToast('Login successful', 'success');
 					await setDetails(responseData.data).then(() =>
 						router.push({ name: 'open-issues' }),
 					);
