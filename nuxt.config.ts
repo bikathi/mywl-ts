@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
   app: {
@@ -21,7 +20,8 @@ export default defineNuxtConfig({
     },
   },
   plugins: [
-    "~/plugins/preline.client.ts"
+    "~/plugins/preline.client.ts",
+    "~/plugins/ofetch-interceptor.client.ts",
   ],
   css: ['~/assets/css/tailwind.css'],
   modules: [
@@ -35,7 +35,12 @@ export default defineNuxtConfig({
       'defineStore', 'storeToRefs'
     ]
   },
-  runtimeConfig: {
-    jwtSecretKey: process.env.MYWL_JWT_SECRET
-  },
+  
+  routeRules: {
+    "/api/**": {
+      proxy: {
+        to: "http://127.0.0.1:8080/api/**",
+      }
+    }
+  }
 })
