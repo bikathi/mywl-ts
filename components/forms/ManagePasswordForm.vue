@@ -52,7 +52,7 @@
 					role="status"
 					aria-label="loading"></span>
 				<span v-if="loadingUpdatePassword">Loading</span>
-				<span v-else>Load More</span>
+				<span v-else>Update Password</span>
 			</button>
 		</div>
 	</form>
