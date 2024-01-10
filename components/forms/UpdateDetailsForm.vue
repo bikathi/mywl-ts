@@ -67,7 +67,13 @@
 			<button
 				type="submit"
 				class="py-3 px-4 text-sm inline-flex items-center font-semibold rounded-md bg-blue-600 text-white hover:bg-blue-700">
-				Update Changes
+				<span
+					v-if="loadingUpdateDetails"
+					class="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-white rounded-full"
+					role="status"
+					aria-label="loading"></span>
+				<span v-if="loadingUpdateDetails">Loading</span>
+				<span v-else>Update Changes</span>
 			</button>
 		</div>
 	</form>
