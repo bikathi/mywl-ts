@@ -112,13 +112,13 @@
 				loadingUpdateDetails.value = false;
 				openToast('Something went wrong. Please try again.', 'danger');
 			},
-			async onResponse({ response }) {
+			}
+			},async onResponse({ response }) {
 				loadingUpdateDetails.value = false;
 				const responseData = response._data;
 				if (response.status === 200) {
 					openToast(responseData.message, 'info');
-				}
-			},
+				
 		});
 	}
 
