@@ -7,12 +7,17 @@ export default defineNuxtPlugin((_nuxtApp) => {
 
     globalThis.$fetch = ofetch.create({
         async onRequest({ request, options }) {
-            if(!allowedNonCSRFMethods.includes(options.method) && !request.toString().endsWith("/signin")) {
+            if(!allowedNonCSRFMethods.includes(options.method)) {
                 options.headers = {
                     'X-CSRF-TOKEN': csrfToken.value,
-                    Authorization: `Bearer ${authToken.value}`,
                 };
                 options.credentials = "include";
+            }
+
+            if(!request.toString().endsWith("/signin")) {
+                options.headers = {
+                    Authorization: `Bearer ${authToken.value}`,
+                };
             }
         },
     });
