@@ -20,7 +20,7 @@
 				<th
 					scope="col"
 					class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
-					Role
+					Miscellaneous
 				</th>
 				<th
 					scope="col"
@@ -52,8 +52,14 @@
 					Field Technician Agent
 				</td>
 				<td
-					class="px-6 py-2 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-					ADMIN
+					class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+					<span class="inline-flex flex-col">
+						<span
+							class="text-xs bg-gray-200 dark:bg-slate-800 dark:text-gray-400 text-opacity-80 p-1 rounded-md w-fit"
+							>@johndoe</span
+						>
+						<span>test-user-id</span>
+					</span>
 				</td>
 				<td
 					class="px-6 py-2 whitespace-nowrap text-end text-sm font-medium">
