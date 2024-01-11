@@ -133,7 +133,8 @@
 			:roles="requestedUserDetails.roles"
 			:department="requestedUserDetails.department"
 			:username="requestedUserDetails.username"
-			:user-id="requestedUserDetails.userId" />
+			:user-id="requestedUserDetails.userId"
+			:account-enabled="requestedUserDetails.accountEnabled" />
 		<!-- end of user management form -->
 		<DashboardFooter />
 	</main>
