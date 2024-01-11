@@ -1,11 +1,11 @@
 <template>
 	<form
-		@submit.prevent="signupUser"
+		@submit.prevent=""
 		method="post">
 		<div class="flex flex-col lg:flex-row">
 			<div
 				class="w-full lg:w-1/3 flex-grow flex flex-col items-center p-2">
-				<ProfilePictureManager />
+				<ProfilePictureManager :show-status="true" />
 				<label
 					for="profile-picture"
 					class="cursor-pointer text-blue-500 hover:underline text-sm mt-2 font-medium">
@@ -16,7 +16,7 @@
 					type="file"
 					class="hidden" />
 
-				<AccountStatusManager />
+				<AccountStatusManager :account-enabled="props.accountEnabled" />
 			</div>
 			<div class="w-full lg:w-2/3 flex-grow">
 				<h3
@@ -207,81 +207,57 @@
 					role="status"
 					aria-label="loading"></span>
 				<span v-if="fetchRequestLoading">Loading</span>
-				<span v-else>Create Account</span>
+				<span v-else>Update Details</span>
 			</button>
 		</div>
 	</form>
 </template>
 
 <script setup lang="ts">
+	export interface Props {
+		firstName: string;
+		otherName: string;
+		username: string;
+		email: string;
+		userId: string;
+		profileImageUrl?: string;
+		birthdate: string;
+		roles: string[];
+		department: string;
+		accountEnabled: boolean;
+	}
+
+	const props = defineProps<Props>();
 	const fetchRequestLoading: Ref<boolean> = ref(false);
-	const firstName: Ref<string> = ref('');
-	const otherName: Ref<string> = ref('');
-	const username: Ref<string> = ref('');
-	const email: Ref<string> = ref('');
-	const userId: Ref<string> = ref('');
-	const profileImageUrl: Ref<string> = ref('test-image-url');
+
+	const firstName: Ref<string> = ref(props.firstName);
+	const otherName: Ref<string> = ref(props.otherName);
+	const username: Ref<string> = ref(props.username);
+	const email: Ref<string> = ref(props.email);
+	const userId: Ref<string> = ref(props.userId);
+	const profileImageUrl: Ref<string | undefined> = ref(props.profileImageUrl);
 	const birthInfo = reactive({
-		day: '',
-		date: '',
-		year: '',
+		day: props.birthdate.split('-')[0],
+		date: props.birthdate.split('-')[1],
+		year: props.birthdate.split('-')[2],
 	});
-	const roles: Ref<string[]> = ref(['role_user']);
-	const department: Ref<string> = ref('');
-	const availableRoles: readonly Object[] = [
-		{
-			text: 'Make Moderator',
-			role: 'role_moderator',
-			id: 'mod_role',
-		},
-		{
-			text: 'Make Admin',
-			role: 'role_admin',
-			id: 'admin_role',
-		},
-	];
+	const roles: Ref<string[]> = ref(props.roles);
+	const department: Ref<string> = ref(props.department);
 	const availableDepartments: readonly string[] = [
 		'IT Department',
 		'Customer Care Department',
 		'Field Technician',
 	];
-	const { openToast } = useToast();
-
-	watch([firstName, otherName], (newValue) => {
-		username.value = `@${newValue[0]}${newValue[1]}`.toLocaleLowerCase();
-	});
-	async function signupUser() {
-		fetchRequestLoading.value = true;
-		await useFetch('/api/v1/accounts/signup', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
-			},
-			body: JSON.stringify({
-				firstName: firstName.value,
-				otherName: otherName.value,
-				username: username.value,
-				email: email.value,
-				dateOfBirth: `${birthInfo.day}-${birthInfo.date}-${birthInfo.year}`,
-				profileURL: profileImageUrl.value,
-				department: department.value,
-				roles: roles.value,
-			}),
-			async onRequestError() {
-				// TODO: Fixup issues with alert box
-				fetchRequestLoading.value = false;
-				openToast('Something went wrong. Please try again.', 'danger');
-			},
-			async onResponse({ response }) {
-				fetchRequestLoading.value = false;
-				const responseData = response._data;
-				if (response.status === 200) {
-					openToast(responseData.message, 'info');
-				} else if (response.status === 500) {
-					openToast(responseData.message, 'warning');
-				}
-			},
-		});
-	}
+	const availableRoles: readonly Object[] = [
+		{
+			text: 'Is A Moderator',
+			role: 'role_moderator',
+			id: 'mod_role',
+		},
+		{
+			text: 'Is An Admin',
+			role: 'role_admin',
+			id: 'admin_role',
+		},
+	];
 </script>
