@@ -1,126 +1,147 @@
 <template>
-	<client-only>
-		<main>
-			<div class="my-4 flex justify-between items-center">
-				<h1 class="text-xl md:text-3xl">Application Users</h1>
-				<button
-					type="button"
-					class="py-2 rounded-full px-4 inline-flex items-center gap-x-2 text-sm font-semibold border border-transparent bg-blue-600 text-white hover:bg-blue-700"
-					data-hs-overlay="#hs-basic-modal">
-					Search
-					<Icon
-						name="cil:search"
-						color="currentColor"
-						size="17" />
-				</button>
-			</div>
-			<!-- start of search users modal -->
-			<SearchUsersModal />
-			<!-- end of search users modal -->
-			<div class="flex flex-col">
-				<div class="-m-1.5 overflow-x-auto">
-					<div class="p-1.5 min-w-full inline-block align-middle">
-						<div
-							class="border rounded-lg shadow overflow-hidden dark:border-gray-700 dark:shadow-gray-900">
-							<!-- start of user's table -->
-							<table
-								class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-								<thead class="bg-gray-50 dark:bg-gray-700">
-									<tr>
-										<th
-											scope="col"
-											class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
-											User
-										</th>
-										<th
-											scope="col"
-											class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
-											Image
-										</th>
-										<th
-											scope="col"
-											class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
-											Department
-										</th>
-										<th
-											scope="col"
-											class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
-											Miscellaneous
-										</th>
-										<th
-											scope="col"
-											class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
-											Account Status
-										</th>
-										<th
-											scope="col"
-											class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
-											Action
-										</th>
-									</tr>
-								</thead>
-								<tbody
-									class="divide-y divide-gray-200 dark:divide-gray-700">
-									<UsersTableLoader v-if="showTableLoader" />
-									<UsersTable
-										v-else-if="!showTableLoader"
-										v-for="(user, index) in responseData"
-										:key="index"
-										:first-name="user.firstName"
-										:other-name="user.otherName"
-										:email="user.email"
-										:profile-image="user.profileImage"
-										:department="user.department"
-										:username="user.username"
-										:user-id="user.userId"
-										:status="user.accountEnabled" />
-								</tbody>
-							</table>
-							<!-- end of user's table -->
-						</div>
+	<main>
+		<div class="my-4 flex justify-between items-center">
+			<h1 class="text-xl md:text-3xl">Application Users</h1>
+			<button
+				type="button"
+				class="py-2 rounded-full px-4 inline-flex items-center gap-x-2 text-sm font-semibold border border-transparent bg-blue-600 text-white hover:bg-blue-700"
+				data-hs-overlay="#hs-basic-modal">
+				Search
+				<Icon
+					name="cil:search"
+					color="currentColor"
+					size="17" />
+			</button>
+		</div>
+		<!-- start of search users modal -->
+		<SearchUsersModal />
+		<!-- end of search users modal -->
+		<div class="flex flex-col">
+			<div class="-m-1.5 overflow-x-auto">
+				<div class="p-1.5 min-w-full inline-block align-middle">
+					<div
+						class="border rounded-lg shadow overflow-hidden dark:border-gray-700 dark:shadow-gray-900">
+						<!-- start of user's table -->
+						<table
+							class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+							<thead class="bg-gray-50 dark:bg-gray-700">
+								<tr>
+									<th
+										scope="col"
+										class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
+										User
+									</th>
+									<th
+										scope="col"
+										class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
+										Image
+									</th>
+									<th
+										scope="col"
+										class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
+										Department
+									</th>
+									<th
+										scope="col"
+										class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
+										Miscellaneous
+									</th>
+									<th
+										scope="col"
+										class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
+										Account Status
+									</th>
+									<th
+										scope="col"
+										class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
+										Action
+									</th>
+								</tr>
+							</thead>
+							<tbody
+								class="divide-y divide-gray-200 dark:divide-gray-700">
+								<UsersTableLoader v-if="showTableLoader" />
+								<UsersTable
+									v-else-if="!showTableLoader"
+									v-for="(user, index) in responseData"
+									:key="index"
+									:first-name="user.firstName"
+									:other-name="user.otherName"
+									:email="user.email"
+									:profile-image="user.profileImage"
+									:department="user.department"
+									:username="user.username"
+									:user-id="user.userId"
+									:status="user.accountEnabled"
+									@user-received="((user: Object) => { requestedUserDetails = user; formMode = 'edit' })" />
+							</tbody>
+						</table>
+						<!-- end of user's table -->
 					</div>
 				</div>
 			</div>
-			<div class="py-2">
-				<button
-					v-if="showLoadMoreButton"
-					@click="
-						async () => {
-							page++;
-							await loadExistingUsers();
-						}
-					"
-					type="button"
-					class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-					<span
-						v-if="loadingUsers"
-						class="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-white rounded-full"
-						role="status"
-						aria-label="loading"></span>
-					<span v-if="loadingUsers">Loading</span>
-					<span v-else>Load More</span>
-				</button>
-			</div>
+		</div>
+		<div class="py-2">
+			<button
+				v-if="showLoadMoreButton"
+				@click="
+					async () => {
+						page++;
+						await loadExistingUsers();
+					}
+				"
+				type="button"
+				class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+				<span
+					v-if="loadingUsers"
+					class="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-white rounded-full"
+					role="status"
+					aria-label="loading"></span>
+				<span v-if="loadingUsers">Loading</span>
+				<span v-else>Load More</span>
+			</button>
+		</div>
 
-			<!-- start of user management form -->
-			<h1 class="text-3xl mt-4">User Management Form</h1>
-			<span
-				class="mb-4 text-sm font-extralight tracking-wider inline-flex items-center"
-				><Icon
-					name="ri:information-line"
-					color="currentColor"
-					size="16"
-					class="mr-1" />To add a new user,
-				<button
-					class="mx-1 text-blue-500 underline font-medium underline-offset-2">
-					clear</button
-				>this form</span
-			>
-			<UserManagementForm />
-			<!-- end of user management form -->
-			<DashboardFooter />
-		</main>
-	</client-only>
+		<!-- start of user management form -->
+		<h1 class="text-3xl mt-4">User Management Form</h1>
+		<span
+			class="mb-4 text-sm font-extralight tracking-wider inline-flex items-center"
+			><Icon
+				name="ri:information-line"
+				color="currentColor"
+				size="16"
+				class="mr-1" />To add a new user,
+			<button
+				class="mx-1 text-blue-500 underline font-medium underline-offset-2"
+				@click="
+					() => {
+						requestedUserDetails = {};
+						formMode = 'create';
+					}
+				">
+				clear</button
+			>this form</span
+		>
+		<AccountCreationForm v-if="formMode === 'create'" />
+		<AccountEditingForm
+			v-else-if="formMode === 'edit'"
+			:first-name="requestedUserDetails.firstName"
+			:other-name="requestedUserDetails.otherName"
+			:profile-image-url="requestedUserDetails.profileImage"
+			:email="requestedUserDetails.email"
+			:birthdate="requestedUserDetails.dateOfBirth"
+			:roles="requestedUserDetails.roles"
+			:department="requestedUserDetails.department"
+			:username="requestedUserDetails.username"
+			:user-id="requestedUserDetails.userId" />
+		<!-- end of user management form -->
+		<DashboardFooter />
+	</main>
+	<hollow-dots-spinner
+		:animation-duration="1000"
+		:dot-size="15"
+		:dots-num="3"
+		color="#ff1d5e" />
 </template>
 
 <script setup lang="ts">
@@ -136,6 +157,13 @@
 	const responseData: Ref<object[]> = ref([]);
 	const showTableLoader: Ref<boolean> = ref(false);
 	const showLoadMoreButton: Ref<boolean> = ref(false);
+
+	/**
+	 * if the form mode is 'create', we will render the <AccountCreationForm /> component
+	 * if the form mode is 'edit', we will render the <AccountEditingForm /> component
+	 */
+	const formMode: Ref<string> = ref('create');
+	const requestedUserDetails: Ref<Object> = ref({});
 
 	async function loadExistingUsers() {
 		loadingUsers.value = true;
