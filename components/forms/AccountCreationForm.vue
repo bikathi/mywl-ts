@@ -5,7 +5,7 @@
 		<div class="flex flex-col lg:flex-row">
 			<div
 				class="w-full lg:w-1/3 flex-grow flex flex-col items-center p-2">
-				<ProfilePictureManager />
+				<ProfilePictureManager :show-status="false" />
 				<label
 					for="profile-picture"
 					class="cursor-pointer text-blue-500 hover:underline text-sm mt-2 font-medium">
@@ -15,8 +15,6 @@
 					id="profile-picture"
 					type="file"
 					class="hidden" />
-
-				<AccountStatusManager />
 			</div>
 			<div class="w-full lg:w-2/3 flex-grow">
 				<h3
