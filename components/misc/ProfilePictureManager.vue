@@ -9,4 +9,9 @@
 	</div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+	export interface Props {
+		showStatus: boolean;
+	}
+	const props = defineProps<Props>();
+</script>
