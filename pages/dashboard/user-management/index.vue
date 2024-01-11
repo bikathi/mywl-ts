@@ -84,7 +84,12 @@
 			<div class="py-2">
 				<button
 					v-if="showLoadMoreButton"
-					@click="loadExistingUsers"
+					@click="
+						async () => {
+							page++;
+							await loadExistingUsers();
+						}
+					"
 					type="button"
 					class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
 					<span
@@ -142,7 +147,6 @@
 					Accept: 'application/json',
 				},
 				async onRequestError() {
-					// TODO: Fixup issues with alert box
 					loadingUsers.value = false;
 					openToast(
 						'Something went wrong. Please try again.',
