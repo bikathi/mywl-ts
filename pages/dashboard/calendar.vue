@@ -7,6 +7,11 @@
 				</h1>
 				<client-only>
 					<VDatePicker
+						@dayclick="
+							() => {
+								console.log('some day clicked');
+							}
+						"
 						v-model="date"
 						:attributes="attrs"
 						expanded
