@@ -21,7 +21,7 @@
 					class="my-2 text-2xl font-bold text-gray-800 dark:text-white">
 					Basic Information
 				</h3>
-				<div class="flex flex-col lg:flex-row space-x-0 lg:space-x-4">
+				<div class="flex flex-col lg:flex-row space-x-0 lg:space-x-4 space-y-4 lg:space-y-0">
 					<div class="w-full lg:w-1/2">
 						<label
 							for="first-name"

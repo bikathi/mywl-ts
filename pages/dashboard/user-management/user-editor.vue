@@ -30,7 +30,7 @@
 						Basic Information
 					</h3>
 					<div
-						class="flex flex-col lg:flex-row space-x-0 lg:space-x-4">
+						class="flex flex-col lg:flex-row space-x-0 lg:space-x-4 space-y-4 lg:space-y-0">
 						<div class="w-full lg:w-1/2">
 							<label
 								for="first-name"
@@ -245,38 +245,44 @@
 	const department: Ref<string> = ref('');
 	const accountEnabled: Ref<boolean> = ref(false);
 	const responseData: Ref<object> = ref({});
-	await useFetch(`/api/v1/accounts/get-account?userId=${route.query.userId}`, {
-		method: 'GET',
-		server: false,
+	await useFetch(
+		`/api/v1/accounts/get-account?userId=${route.query.userId}`,
+		{
+			method: 'GET',
+			server: false,
 
-		headers: {
-			Accept: 'application/json',
+			headers: {
+				Accept: 'application/json',
+			},
+			async onRequestError() {
+				// TODO: Fixup issues with alert box
+				loadingUserDetails.value = false;
+				openToast('Something went wrong. Please try again.', 'danger');
+			},
+			async onResponse({ response }) {
+				if (response.status === 200) {
+					openToast('Successfully retrieved user details', 'info');
+				}
+				loadingUserDetails.value = false;
+				responseData.value = response._data.data;
+				firstName.value = responseData.value.firstName;
+				otherName.value = responseData.value.otherName;
+				username.value = responseData.value.username;
+				email.value = responseData.value.email;
+				roles.value = responseData.value.roles;
+				department.value = responseData.value.department;
+				profileImageUrl.value = responseData.value.profileImage;
+				accountEnabled.value = responseData.value.accountEnabled;
+				birthInfo.day = responseData.value.dateOfBirth.split('-')[0];
+				birthInfo.date = responseData.value.dateOfBirth.split('-')[1];
+				birthInfo.year = responseData.value.dateOfBirth.split('-')[2];
+			},
 		},
-		async onRequestError() {
-			// TODO: Fixup issues with alert box
-			loadingUserDetails.value = false;
-			openToast('Something went wrong. Please try again.', 'danger');
-		},
-		async onResponse({ response }) {
-			if (response.status === 200) {
-				openToast('Successfully retrieved user details', 'info');
-			}
-			loadingUserDetails.value = false;
-			responseData.value = response._data.data;
-			firstName.value = responseData.value.firstName;
-			otherName.value = responseData.value.otherName;
-			username.value = responseData.value.username;
-			email.value = responseData.value.email;
-			roles.value = responseData.value.roles;
-			department.value = responseData.value.department;
-			profileImageUrl.value = responseData.value.profileImage;
-			accountEnabled.value = responseData.value.accountEnabled;
-			birthInfo.day = responseData.value.dateOfBirth.split('-')[0];
-			birthInfo.date = responseData.value.dateOfBirth.split('-')[1];
-			birthInfo.year = responseData.value.dateOfBirth.split('-')[2];
-		},
-	});
+	);
 	const fetchRequestLoading: Ref<boolean> = ref(false);
+	watch([firstName, otherName], (newValue) => {
+		username.value = `@${newValue[0]}${newValue[1]}`.toLocaleLowerCase();
+	});
 
 	const availableDepartments: readonly string[] = [
 		'IT Department',
