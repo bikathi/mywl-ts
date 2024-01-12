@@ -82,7 +82,7 @@
 	const router = useRouter();
 
 	async function loginUser() {
-		await useFetch('/api/v1/auth/signin', {
+		await $fetch('/api/v1/auth/signin', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

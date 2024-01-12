@@ -160,7 +160,7 @@
 	const showLoadMoreButton: Ref<boolean> = ref(false);
 
 	/**
-	 * if the form mode is 'create', we will render the <AccountCreationForm /> component
+	 * if the form mode is 'create'(default), we will render the <AccountCreationForm /> component
 	 * if the form mode is 'edit', we will render the <AccountEditingForm /> component
 	 */
 	const formMode: Ref<string> = ref('create');
@@ -168,7 +168,7 @@
 
 	async function loadExistingUsers() {
 		loadingUsers.value = true;
-		await useFetch(
+		await $fetch(
 			`/api/v1/accounts/get-list?page=${page.value}&size=${size.value}`,
 			{
 				method: 'GET',
