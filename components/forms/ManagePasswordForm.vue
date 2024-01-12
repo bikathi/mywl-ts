@@ -71,7 +71,7 @@
 	async function updateUserPassword(): Promise<void> {
 		loadingUpdatePassword.value = true;
 
-		await useFetch('/api/v1/accounts/update-password', {
+		await $fetch('/api/v1/accounts/update-password', {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',

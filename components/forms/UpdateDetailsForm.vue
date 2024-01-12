@@ -91,7 +91,7 @@
 
 	async function updateUserDetails() {
 		loadingUpdateDetails.value = true;
-		await useFetch('/api/v1/accounts/update-account', {
+		await $fetch('/api/v1/accounts/update-account', {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',

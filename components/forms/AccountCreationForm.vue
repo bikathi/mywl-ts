@@ -250,7 +250,7 @@
 	});
 	async function signupUser() {
 		fetchRequestLoading.value = true;
-		await useFetch('/api/v1/accounts/signup', {
+		await $fetch('/api/v1/accounts/signup', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
