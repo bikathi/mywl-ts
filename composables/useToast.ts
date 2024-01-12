@@ -8,10 +8,10 @@ export default function() {
 			position: 'top-center',
 			showIcon: true,
 			hideProgressBar: true,
-			timeout: 3000,
+			timeout: 2000,
 			showCloseButton: false,
 			type: type,
-			transition: 'slide'
+			transition: 'zoom'
 		});
     }
 
