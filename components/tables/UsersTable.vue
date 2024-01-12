@@ -39,11 +39,16 @@
 			<span>{{ props.status === true ? 'Enabled' : 'Disabled' }}</span>
 		</td>
 		<td class="px-6 py-2 whitespace-nowrap text-end text-sm font-medium">
-			<button
-				type="button"
-				class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-				Modify
-			</button>
+			<NuxtLink
+				class="font-semibold text-blue-600 hover:text-blue-800 dark:text-blue-500 dark:hover:text-blue-400"
+				:to="{
+					name: 'user-editor',
+					query: {
+						userId: props.userId,
+					},
+				}"
+				>View & Modify</NuxtLink
+			>
 		</td>
 	</tr>
 </template>
