@@ -130,7 +130,7 @@
 		// also save the user's prefference to their settings file
 	}
 
-	onBeforeMount(() => {
+	onMounted(() => {
 		username.value = `${getDetails.firstName} ${getDetails.otherName}`;
 		email.value = getDetails.email;
 	});
