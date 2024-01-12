@@ -38,7 +38,7 @@
 			async onResponse({ response }) {
 				if (response.status === 200) {
 					openToast('User account has been deactivated.', 'info');
-					location.reload();
+					setTimeout(() => location.reload(), 2000);
 				}
 			},
 		});
@@ -57,7 +57,7 @@
 			async onResponse({ response }) {
 				if (response.status === 200) {
 					openToast('User account has been activated.', 'info');
-					location.reload();
+					setTimeout(() => location.reload(), 2000);
 				}
 			},
 		});
