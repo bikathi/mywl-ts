@@ -16,6 +16,7 @@
 <script setup lang="ts">
 	export interface Props {
 		accountEnabled: boolean;
+		userId: string
 	}
 
 	const props = defineProps<Props>();
