@@ -303,34 +303,32 @@
 	];
 
 	async function updateUserDetails() {
-		const { data, status, error } = await $fetch(
-			'/api/v1/accounts/update-account',
-			{
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json',
-				},
-				body: JSON.stringify({
-					userId: route.query.userId,
-					firstName: firstName.value,
-					otherName: otherName.value,
-					username: username.value,
-					email: email.value,
-					dateOfBirth: `${birthInfo.day}-${birthInfo.date}-${birthInfo.year}`,
-					profileURL: profileImageUrl.value,
-					department: department.value,
-					roles: roles.value,
-				}),
+		const data: any = await $fetch('/api/v1/accounts/update-account', {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
 			},
-		);
+			body: JSON.stringify({
+				userId: route.query.userId,
+				firstName: firstName.value,
+				otherName: otherName.value,
+				username: username.value,
+				email: email.value,
+				dateOfBirth: `${birthInfo.day}-${birthInfo.date}-${birthInfo.year}`,
+				profileURL: profileImageUrl.value,
+				department: department.value,
+				roles: roles.value,
+			}),
+		}).catch((error) => {
+			openToast('Operation failed.', 'danger');
+		});
 
-		if (status === 200) {
-			openToast('User details updated successfully', 'success');
+		if (data.status === 200) {
+			openToast('Update successful. Reloading', 'success');
+			setTimeout(() => location.reload(), 2000);
+		} else {
+			openToast('Something went wrong. Please try again!', 'warning');
 		}
-
-		console.log('data: ', data);
-		console.log('status:  ', status);
-		console.log('error: ', error);
 	}
 </script>
