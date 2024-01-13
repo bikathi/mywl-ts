@@ -72,8 +72,7 @@
 									:department="user.department"
 									:username="user.username"
 									:user-id="user.userId"
-									:status="user.accountEnabled"
-									@user-received="((user: Object) => { requestedUserDetails = user; formMode = 'edit' })" />
+									:status="user.accountEnabled" />
 							</tbody>
 						</table>
 						<!-- end of user's table -->
@@ -110,39 +109,13 @@
 				name="ri:information-line"
 				color="currentColor"
 				size="16"
-				class="mr-1" />To add a new user,
-			<button
-				class="mx-1 text-blue-500 underline font-medium underline-offset-2"
-				@click="
-					() => {
-						requestedUserDetails = {};
-						formMode = 'create';
-					}
-				">
-				clear</button
-			>this form</span
+				class="mr-1" />To add a new user, use this form</span
 		>
-		<AccountCreationForm v-if="formMode === 'create'" />
-		<AccountEditingForm
-			v-else-if="formMode === 'edit'"
-			:first-name="requestedUserDetails.firstName"
-			:other-name="requestedUserDetails.otherName"
-			:profile-image-url="requestedUserDetails.profileImage"
-			:email="requestedUserDetails.email"
-			:birthdate="requestedUserDetails.dateOfBirth"
-			:roles="requestedUserDetails.roles"
-			:department="requestedUserDetails.department"
-			:username="requestedUserDetails.username"
-			:user-id="requestedUserDetails.userId"
-			:account-enabled="requestedUserDetails.accountEnabled" />
+		<AccountCreationForm />
+
 		<!-- end of user management form -->
 		<DashboardFooter />
 	</main>
-	<hollow-dots-spinner
-		:animation-duration="1000"
-		:dot-size="15"
-		:dots-num="3"
-		color="#ff1d5e" />
 </template>
 
 <script setup lang="ts">
@@ -158,13 +131,6 @@
 	const responseData: Ref<object[]> = ref([]);
 	const showTableLoader: Ref<boolean> = ref(false);
 	const showLoadMoreButton: Ref<boolean> = ref(false);
-
-	/**
-	 * if the form mode is 'create'(default), we will render the <AccountCreationForm /> component
-	 * if the form mode is 'edit', we will render the <AccountEditingForm /> component
-	 */
-	const formMode: Ref<string> = ref('create');
-	const requestedUserDetails: Ref<Object> = ref({});
 
 	async function loadExistingUsers() {
 		loadingUsers.value = true;
@@ -198,8 +164,9 @@
 
 	onMounted(async () => {
 		showTableLoader.value = true;
-		await useFetch(`/api/v1/accounts/get-list?page=0&size=10`, {
+		await $fetch(`/api/v1/accounts/get-list?page=0&size=10`, {
 			method: 'GET',
+			server: false,
 			headers: {
 				Accept: 'application/json',
 			},
