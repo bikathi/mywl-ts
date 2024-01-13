@@ -4,7 +4,7 @@
 			<h1 class="text-xl md:text-3xl">Edit Application User</h1>
 		</div>
 		<form
-			@submit.prevent=""
+			@submit.prevent="updateUserDetails"
 			method="post">
 			<div class="flex flex-col lg:flex-row">
 				<div
@@ -72,7 +72,7 @@
 							<input
 								type="text"
 								id="username"
-								class="py-3 px-4 block w-full border rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600 disabled:bg-gray-100 pointer-events-none placeholder:uppercase placeholder:text-xs placeholder:font-medium"
+								class="py-3 px-4 block w-full border rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-30 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600 disabled:bg-gray-100 pointer-events-none placeholder:uppercase placeholder:text-xs placeholder:font-medium"
 								placeholder="will be auto-generated"
 								disabled
 								v-model="username"
@@ -301,4 +301,36 @@
 			id: 'admin_role',
 		},
 	];
+
+	async function updateUserDetails() {
+		const { data, status, error } = await $fetch(
+			'/api/v1/accounts/update-account',
+			{
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+				},
+				body: JSON.stringify({
+					userId: route.query.userId,
+					firstName: firstName.value,
+					otherName: otherName.value,
+					username: username.value,
+					email: email.value,
+					dateOfBirth: `${birthInfo.day}-${birthInfo.date}-${birthInfo.year}`,
+					profileURL: profileImageUrl.value,
+					department: department.value,
+					roles: roles.value,
+				}),
+			},
+		);
+
+		if (status === 200) {
+			openToast('User details updated successfully', 'success');
+		}
+
+		console.log('data: ', data);
+		console.log('status:  ', status);
+		console.log('error: ', error);
+	}
 </script>
