@@ -86,9 +86,7 @@
 				async onResponse({ response }) {
 					loadingUpdatePassword.value = false;
 					const responseData = response._data;
-					if (response.status === 500) {
-						openToast(responseData.message, 'warning');
-					} else if (response.status === 200) {
+					if (response.status === 200) {
 						openToast(responseData.message, 'info');
 					}
 

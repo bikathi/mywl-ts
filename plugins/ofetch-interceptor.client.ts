@@ -32,11 +32,13 @@ export default defineNuxtPlugin((_nuxtApp) => {
                 }
 
                 case 500: {
-                    openToast(responseBody.message, 'waring');
+                    openToast(responseBody.message, 'warning');
+                    break
                 }
 
                 case 404: {
-                    openToast(responseBody.message, 'waring');
+                    openToast(responseBody.message, 'warning');
+                    break;
                 }
             }
         }
