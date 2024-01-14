@@ -250,18 +250,6 @@
 		'Customer Care Department',
 		'Field Technician',
 	];
-	const availableRoles: readonly Object[] = [
-		{
-			text: 'Is A Moderator',
-			role: 'role_moderator',
-			id: 'mod_role',
-		},
-		{
-			text: 'Is An Admin',
-			role: 'role_admin',
-			id: 'admin_role',
-		},
-	];
 
 	watch([firstName, otherName], (newValue) => {
 		username.value = `@${newValue[0]}${newValue[1]}`.toLocaleLowerCase();
