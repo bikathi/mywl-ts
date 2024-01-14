@@ -70,38 +70,33 @@
 
 	async function updateUserPassword(): Promise<void> {
 		loadingUpdatePassword.value = true;
+		try {
+			await $fetch('/api/v1/accounts/update-password', {
+				method: 'PATCH',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+				},
+				body: JSON.stringify({
+					userId: getDetails.userId,
+					oldPassword: currentPassword.value,
+					newPassword: newPassword.value,
+					passwordConfirmation: newPasswordConfirm.value,
+				}),
+				async onResponse({ response }) {
+					loadingUpdatePassword.value = false;
+					const responseData = response._data;
+					if (response.status === 500) {
+						openToast(responseData.message, 'warning');
+					} else if (response.status === 200) {
+						openToast(responseData.message, 'info');
+					}
 
-		await $fetch('/api/v1/accounts/update-password', {
-			method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
-			},
-			body: JSON.stringify({
-				userId: getDetails.userId,
-				oldPassword: currentPassword.value,
-				newPassword: newPassword.value,
-				passwordConfirmation: newPasswordConfirm.value,
-			}),
-			async onRequestError() {
-				// TODO: Fixup issues with alert box
-				loadingUpdatePassword.value = false;
-				openToast('Something went wrong. Please try again.', 'danger');
-			},
-			async onResponse({ response }) {
-				loadingUpdatePassword.value = false;
-				const responseData = response._data;
-				console.log('response data: ', responseData);
-				if (response.status === 500) {
-					openToast(responseData.message, 'warning');
-				} else if (response.status === 200) {
-					openToast(responseData.message, 'info');
-				}
-
-				currentPassword.value = '';
-				newPassword.value = '';
-				newPasswordConfirm.value = '';
-			},
-		});
+					currentPassword.value = '';
+					newPassword.value = '';
+					newPasswordConfirm.value = '';
+				},
+			});
+		} catch (error) {}
 	}
 </script>

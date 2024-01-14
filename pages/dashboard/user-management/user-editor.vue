@@ -292,7 +292,6 @@
 		);
 	} catch (error) {
 		loadingUserDetails.value = false;
-		openToast('Something went wrong. Please try again!', 'danger');
 	}
 
 	async function updateUserDetails() {
@@ -320,8 +319,6 @@
 				openToast('Update successful. Reloading...', 'success');
 				setTimeout(() => location.reload(), 2000);
 			}
-		} catch (error) {
-			openToast('Something went wrong. Please try again!', 'danger');
-		}
+		} catch (error) {}
 	}
 </script>

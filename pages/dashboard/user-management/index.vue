@@ -145,9 +145,7 @@
 				await handleResponse(response);
 			},
 		});
-	} catch (error) {
-		openToast('Something went wrong. Please try again!', 'danger');
-	}
+	} catch (error) {}
 
 	async function loadMoreUsers() {
 		loadingUsers.value = true;
@@ -164,9 +162,7 @@
 					},
 				},
 			);
-		} catch (error) {
-			openToast('Something went wrong. Please try again!', 'danger');
-		}
+		} catch (error) {}
 	}
 
 	async function handleResponse(response) {

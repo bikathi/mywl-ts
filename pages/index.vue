@@ -107,8 +107,6 @@
 					}
 				},
 			});
-		} catch (error) {
-			openToast('Something went wrong. Please try again!', 'danger');
-		}
+		} catch (error) {}
 	}
 </script>
