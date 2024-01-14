@@ -106,7 +106,7 @@
 		<span
 			class="mb-4 text-sm font-extralight tracking-wider inline-flex items-center"
 			><Icon
-				name="ri:iloadMoreUsersnformation-line"
+				name="ri:information-line"
 				color="currentColor"
 				size="16"
 				class="mr-1" />To add a new user, use this form</span
