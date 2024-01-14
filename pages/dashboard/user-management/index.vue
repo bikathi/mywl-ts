@@ -127,7 +127,6 @@
 	const loadingUsers: Ref<boolean> = ref(false);
 	const page: Ref<number> = ref(0);
 	const size: Ref<number> = ref(10);
-	const { openToast } = useToast();
 	const responseData: Ref<object[]> = ref([]);
 	const showTableLoader: Ref<boolean> = ref(false);
 	const showLoadMoreButton: Ref<boolean> = ref(false);
@@ -140,13 +139,6 @@
 				method: 'GET',
 				headers: {
 					Accept: 'application/json',
-				},
-				async onRequestError() {
-					loadingUsers.value = false;
-					openToast(
-						'Something went wrong. Please try again.',
-						'danger',
-					);
 				},
 				async onResponse({ response }) {
 					loadingUsers.value = false;
@@ -169,10 +161,6 @@
 			server: false,
 			headers: {
 				Accept: 'application/json',
-			},
-			async onRequestError() {
-				showTableLoader.value = false;
-				openToast('Something went wrong. Please try again.', 'danger');
 			},
 			async onResponse({ response }) {
 				showTableLoader.value = false;
