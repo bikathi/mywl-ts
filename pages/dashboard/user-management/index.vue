@@ -86,7 +86,7 @@
 				@click="
 					async () => {
 						page++;
-						await loadExistingUsers();
+						await loadMoreUsers();
 					}
 				"
 				type="button"
@@ -106,7 +106,7 @@
 		<span
 			class="mb-4 text-sm font-extralight tracking-wider inline-flex items-center"
 			><Icon
-				name="ri:information-line"
+				name="ri:iloadMoreUsersnformation-line"
 				color="currentColor"
 				size="16"
 				class="mr-1" />To add a new user, use this form</span
@@ -130,33 +130,11 @@
 	const responseData: Ref<object[]> = ref([]);
 	const showTableLoader: Ref<boolean> = ref(false);
 	const showLoadMoreButton: Ref<boolean> = ref(false);
+	const { openToast } = useToast();
 
-	async function loadExistingUsers() {
-		loadingUsers.value = true;
-		await $fetch(
-			`/api/v1/accounts/get-list?page=${page.value}&size=${size.value}`,
-			{
-				method: 'GET',
-				headers: {
-					Accept: 'application/json',
-				},
-				async onResponse({ response }) {
-					loadingUsers.value = false;
-					if (!(response._data.data.length < size.value)) {
-						showLoadMoreButton.value = true;
-					}
-
-					for (let user in response._data.data) {
-						responseData.value.push(response._data.data[user]);
-					}
-				},
-			},
-		);
-	}
-
-	onMounted(async () => {
+	try {
 		showTableLoader.value = true;
-		await $fetch(`/api/v1/accounts/get-list?page=0&size=10`, {
+		await useFetch(`/api/v1/accounts/get-list?page=0&size=10`, {
 			method: 'GET',
 			server: false,
 			headers: {
@@ -164,11 +142,40 @@
 			},
 			async onResponse({ response }) {
 				showTableLoader.value = false;
-				responseData.value = response._data.data;
-				if (!(response._data.data.length < size.value)) {
-					showLoadMoreButton.value = true;
-				}
+				await handleResponse(response);
 			},
 		});
-	});
+	} catch (error) {
+		openToast('Something went wrong. Please try again!', 'danger');
+	}
+
+	async function loadMoreUsers() {
+		loadingUsers.value = true;
+		try {
+			await $fetch(
+				`/api/v1/accounts/get-list?page=${page.value}&size=${size.value}`,
+				{
+					method: 'GET',
+					headers: {
+						Accept: 'application/json',
+					},
+					async onResponse({ response }) {
+						loadingUsers.value = false;
+					},
+				},
+			);
+		} catch (error) {
+			openToast('Something went wrong. Please try again!', 'danger');
+		}
+	}
+
+	async function handleResponse(response) {
+		if (!(response._data.data.length < size.value)) {
+			showLoadMoreButton.value = true;
+		}
+
+		for (let user in response._data.data) {
+			responseData.value.push(response._data.data[user]);
+		}
+	}
 </script>
