@@ -4,8 +4,8 @@
 			<div
 				class="bg-gray-100 rounded-t-xl py-4 px-3 dark:bg-slate-800 dark:border-gray-700">
 				<p class="mt-1 text-sm text-gray-500 dark:text-gray-500">
-					Kindly provide as much information as possible about the
-					issue.
+					Each issue you open will be tied to your username as the
+					opener.
 				</p>
 			</div>
 			<div class="m-3">
