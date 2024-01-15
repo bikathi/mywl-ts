@@ -83,6 +83,36 @@
 						</div>
 					</div>
 				</div>
+				<div
+					class="flex flex-col lg:flex-row space-x-0 lg:space-x-4 mt-4">
+					<div class="w-full lg:w-1/2">
+						<label
+							for="issue-title"
+							class="block text-sm font-medium mb-1 dark:text-white"
+							>Client Phone</label
+						>
+						<input
+							type="text"
+							id="issue-title"
+							class="py-3 px-4 block w-full border rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
+							placeholder="e.g. +254..."
+							pattern="\d*"
+							maxlength="12" />
+					</div>
+					<div class="w-full lg:w-1/2">
+						<label
+							for="client-name"
+							class="block text-sm font-medium mb-1 dark:text-white"
+							>Client Email</label
+						>
+						<input
+							type="email"
+							maxlength="50"
+							id="client-name"
+							class="py-3 px-4 block w-full border rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
+							placeholder="johndoe@gmail.com" />
+					</div>
+				</div>
 				<h3
 					class="mt-4 text-2xl font-bold text-gray-800 dark:text-white">
 					Describe the Issue
