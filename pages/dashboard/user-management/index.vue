@@ -72,8 +72,7 @@
 									:department="user.department"
 									:username="user.username"
 									:user-id="user.userId"
-									:status="user.accountEnabled"
-									@user-received="((user: Object) => { requestedUserDetails = user; formMode = 'edit' })" />
+									:status="user.accountEnabled" />
 							</tbody>
 						</table>
 						<!-- end of user's table -->
@@ -87,7 +86,7 @@
 				@click="
 					async () => {
 						page++;
-						await loadExistingUsers();
+						await loadMoreUsers();
 					}
 				"
 				type="button"
@@ -110,39 +109,13 @@
 				name="ri:information-line"
 				color="currentColor"
 				size="16"
-				class="mr-1" />To add a new user,
-			<button
-				class="mx-1 text-blue-500 underline font-medium underline-offset-2"
-				@click="
-					() => {
-						requestedUserDetails = {};
-						formMode = 'create';
-					}
-				">
-				clear</button
-			>this form</span
+				class="mr-1" />To add a new user, use this form</span
 		>
-		<AccountCreationForm v-if="formMode === 'create'" />
-		<AccountEditingForm
-			v-else-if="formMode === 'edit'"
-			:first-name="requestedUserDetails.firstName"
-			:other-name="requestedUserDetails.otherName"
-			:profile-image-url="requestedUserDetails.profileImage"
-			:email="requestedUserDetails.email"
-			:birthdate="requestedUserDetails.dateOfBirth"
-			:roles="requestedUserDetails.roles"
-			:department="requestedUserDetails.department"
-			:username="requestedUserDetails.username"
-			:user-id="requestedUserDetails.userId"
-			:account-enabled="requestedUserDetails.accountEnabled" />
+		<AccountCreationForm />
+
 		<!-- end of user management form -->
 		<DashboardFooter />
 	</main>
-	<hollow-dots-spinner
-		:animation-duration="1000"
-		:dot-size="15"
-		:dots-num="3"
-		color="#ff1d5e" />
 </template>
 
 <script setup lang="ts">
@@ -154,66 +127,51 @@
 	const loadingUsers: Ref<boolean> = ref(false);
 	const page: Ref<number> = ref(0);
 	const size: Ref<number> = ref(10);
-	const { openToast } = useToast();
 	const responseData: Ref<object[]> = ref([]);
 	const showTableLoader: Ref<boolean> = ref(false);
 	const showLoadMoreButton: Ref<boolean> = ref(false);
+	const { openToast } = useToast();
 
-	/**
-	 * if the form mode is 'create'(default), we will render the <AccountCreationForm /> component
-	 * if the form mode is 'edit', we will render the <AccountEditingForm /> component
-	 */
-	const formMode: Ref<string> = ref('create');
-	const requestedUserDetails: Ref<Object> = ref({});
-
-	async function loadExistingUsers() {
-		loadingUsers.value = true;
-		await $fetch(
-			`/api/v1/accounts/get-list?page=${page.value}&size=${size.value}`,
-			{
-				method: 'GET',
-				headers: {
-					Accept: 'application/json',
-				},
-				async onRequestError() {
-					loadingUsers.value = false;
-					openToast(
-						'Something went wrong. Please try again.',
-						'danger',
-					);
-				},
-				async onResponse({ response }) {
-					loadingUsers.value = false;
-					if (!(response._data.data.length < size.value)) {
-						showLoadMoreButton.value = true;
-					}
-
-					for (let user in response._data.data) {
-						responseData.value.push(response._data.data[user]);
-					}
-				},
-			},
-		);
-	}
-
-	onMounted(async () => {
+	try {
 		showTableLoader.value = true;
 		await useFetch(`/api/v1/accounts/get-list?page=0&size=10`, {
 			method: 'GET',
+			server: false,
 			headers: {
 				Accept: 'application/json',
 			},
-			async onRequestError() {
-				showTableLoader.value = false;
-				openToast('Something went wrong. Please try again.', 'danger');
-			},
 			async onResponse({ response }) {
 				showTableLoader.value = false;
-				responseData.value = response._data.data;
-				if (!(response._data.data.length < size.value)) {
-					showLoadMoreButton.value = true;
-				}
+				await handleResponse(response);
 			},
 		});
-	});
+	} catch (error) {}
+
+	async function loadMoreUsers() {
+		loadingUsers.value = true;
+		try {
+			await $fetch(
+				`/api/v1/accounts/get-list?page=${page.value}&size=${size.value}`,
+				{
+					method: 'GET',
+					headers: {
+						Accept: 'application/json',
+					},
+					async onResponse({ response }) {
+						loadingUsers.value = false;
+					},
+				},
+			);
+		} catch (error) {}
+	}
+
+	async function handleResponse(response) {
+		if (!(response._data.data.length < size.value)) {
+			showLoadMoreButton.value = true;
+		}
+
+		for (let user in response._data.data) {
+			responseData.value.push(response._data.data[user]);
+		}
+	}
 </script>

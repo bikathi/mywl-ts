@@ -222,7 +222,6 @@
 </template>
 
 <script setup lang="ts">
-	import { HollowDotsSpinner } from 'epic-spinners';
 	definePageMeta({
 		name: 'user-editor',
 		layout: 'dashboard-layout',
@@ -245,90 +244,81 @@
 	const department: Ref<string> = ref('');
 	const accountEnabled: Ref<boolean> = ref(false);
 	const responseData: Ref<object> = ref({});
-	await useFetch(
-		`/api/v1/accounts/get-account?userId=${route.query.userId}`,
-		{
-			method: 'GET',
-			server: false,
-
-			headers: {
-				Accept: 'application/json',
-			},
-			async onRequestError() {
-				// TODO: Fixup issues with alert box
-				loadingUserDetails.value = false;
-				openToast('Something went wrong. Please try again.', 'danger');
-			},
-			async onResponse({ response }) {
-				if (response.status === 200) {
-					openToast('Successfully retrieved user details', 'info');
-				}
-				loadingUserDetails.value = false;
-				responseData.value = response._data.data;
-				firstName.value = responseData.value.firstName;
-				otherName.value = responseData.value.otherName;
-				username.value = responseData.value.username;
-				email.value = responseData.value.email;
-				roles.value = responseData.value.roles;
-				department.value = responseData.value.department;
-				profileImageUrl.value = responseData.value.profileImage;
-				accountEnabled.value = responseData.value.accountEnabled;
-				birthInfo.day = responseData.value.dateOfBirth.split('-')[0];
-				birthInfo.date = responseData.value.dateOfBirth.split('-')[1];
-				birthInfo.year = responseData.value.dateOfBirth.split('-')[2];
-			},
-		},
-	);
 	const fetchRequestLoading: Ref<boolean> = ref(false);
-	watch([firstName, otherName], (newValue) => {
-		username.value = `@${newValue[0]}${newValue[1]}`.toLocaleLowerCase();
-	});
-
 	const availableDepartments: readonly string[] = [
 		'IT Department',
 		'Customer Care Department',
 		'Field Technician',
 	];
-	const availableRoles: readonly Object[] = [
-		{
-			text: 'Is A Moderator',
-			role: 'role_moderator',
-			id: 'mod_role',
-		},
-		{
-			text: 'Is An Admin',
-			role: 'role_admin',
-			id: 'admin_role',
-		},
-	];
+
+	watch([firstName, otherName], (newValue) => {
+		username.value = `@${newValue[0]}${newValue[1]}`.toLocaleLowerCase();
+	});
+
+	try {
+		await useFetch(
+			`/api/v1/accounts/get-account?userId=${route.query.userId}`,
+			{
+				method: 'GET',
+				server: false,
+				headers: {
+					Accept: 'application/json',
+				},
+				async onResponse({ response }) {
+					if (response.status === 200) {
+						openToast(
+							'Successfully retrieved user details',
+							'info',
+						);
+					}
+					loadingUserDetails.value = false;
+					responseData.value = response._data.data;
+					firstName.value = responseData.value.firstName;
+					otherName.value = responseData.value.otherName;
+					username.value = responseData.value.username;
+					email.value = responseData.value.email;
+					roles.value = responseData.value.roles;
+					department.value = responseData.value.department;
+					profileImageUrl.value = responseData.value.profileImage;
+					accountEnabled.value = responseData.value.accountEnabled;
+					birthInfo.day =
+						responseData.value.dateOfBirth.split('-')[0];
+					birthInfo.date =
+						responseData.value.dateOfBirth.split('-')[1];
+					birthInfo.year =
+						responseData.value.dateOfBirth.split('-')[2];
+				},
+			},
+		);
+	} catch (error) {
+		loadingUserDetails.value = false;
+	}
 
 	async function updateUserDetails() {
-		const data: any = await $fetch('/api/v1/accounts/update-account', {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
-			},
-			body: JSON.stringify({
-				userId: route.query.userId,
-				firstName: firstName.value,
-				otherName: otherName.value,
-				username: username.value,
-				email: email.value,
-				dateOfBirth: `${birthInfo.day}-${birthInfo.date}-${birthInfo.year}`,
-				profileURL: profileImageUrl.value,
-				department: department.value,
-				roles: roles.value,
-			}),
-		}).catch((error) => {
-			openToast('Operation failed.', 'danger');
-		});
+		try {
+			const data: any = await $fetch('/api/v1/accounts/update-account', {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+				},
+				body: JSON.stringify({
+					userId: route.query.userId,
+					firstName: firstName.value,
+					otherName: otherName.value,
+					username: username.value,
+					email: email.value,
+					dateOfBirth: `${birthInfo.day}-${birthInfo.date}-${birthInfo.year}`,
+					profileURL: profileImageUrl.value,
+					department: department.value,
+					roles: roles.value,
+				}),
+			});
 
-		if (data.status === 200) {
-			openToast('Update successful. Reloading', 'success');
-			setTimeout(() => location.reload(), 2000);
-		} else {
-			openToast('Something went wrong. Please try again!', 'warning');
-		}
+			if (data.status === 200) {
+				openToast('Update successful. Reloading...', 'success');
+				setTimeout(() => location.reload(), 2000);
+			}
+		} catch (error) {}
 	}
 </script>

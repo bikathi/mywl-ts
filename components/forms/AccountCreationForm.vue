@@ -21,7 +21,8 @@
 					class="my-2 text-2xl font-bold text-gray-800 dark:text-white">
 					Basic Information
 				</h3>
-				<div class="flex flex-col lg:flex-row space-x-0 lg:space-x-4 space-y-4 lg:space-y-0">
+				<div
+					class="flex flex-col lg:flex-row space-x-0 lg:space-x-4 space-y-4 lg:space-y-0">
 					<div class="w-full lg:w-1/2">
 						<label
 							for="first-name"
@@ -226,60 +227,41 @@
 	});
 	const roles: Ref<string[]> = ref(['role_user']);
 	const department: Ref<string> = ref('');
-	const availableRoles: readonly Object[] = [
-		{
-			text: 'Make Moderator',
-			role: 'role_moderator',
-			id: 'mod_role',
-		},
-		{
-			text: 'Make Admin',
-			role: 'role_admin',
-			id: 'admin_role',
-		},
-	];
-	const availableDepartments: readonly string[] = [
-		'IT Department',
-		'Customer Care Department',
-		'Field Technician',
-	];
 	const { openToast } = useToast();
 
 	watch([firstName, otherName], (newValue) => {
 		username.value = `@${newValue[0]}${newValue[1]}`.toLocaleLowerCase();
 	});
+
 	async function signupUser() {
 		fetchRequestLoading.value = true;
-		await $fetch('/api/v1/accounts/signup', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
-			},
-			body: JSON.stringify({
-				firstName: firstName.value,
-				otherName: otherName.value,
-				username: username.value,
-				email: email.value,
-				dateOfBirth: `${birthInfo.day}-${birthInfo.date}-${birthInfo.year}`,
-				profileURL: profileImageUrl.value,
-				department: department.value,
-				roles: roles.value,
-			}),
-			async onRequestError() {
-				// TODO: Fixup issues with alert box
-				fetchRequestLoading.value = false;
-				openToast('Something went wrong. Please try again.', 'danger');
-			},
-			async onResponse({ response }) {
-				fetchRequestLoading.value = false;
-				const responseData = response._data;
-				if (response.status === 200) {
-					openToast(responseData.message, 'info');
-				} else if (response.status === 500) {
-					openToast(responseData.message, 'warning');
-				}
-			},
-		});
+		try {
+			await $fetch('/api/v1/accounts/signup', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+				},
+				body: JSON.stringify({
+					firstName: firstName.value,
+					otherName: otherName.value,
+					username: username.value,
+					email: email.value,
+					dateOfBirth: `${birthInfo.day}-${birthInfo.date}-${birthInfo.year}`,
+					profileURL: profileImageUrl.value,
+					department: department.value,
+					roles: roles.value,
+				}),
+				async onResponse({ response }) {
+					fetchRequestLoading.value = false;
+					const responseData = response._data;
+					if (response.status === 200) {
+						openToast(responseData.message, 'info');
+					} else if (response.status === 500) {
+						openToast(responseData.message, 'warning');
+					}
+				},
+			});
+		} catch (error) {}
 	}
 </script>
