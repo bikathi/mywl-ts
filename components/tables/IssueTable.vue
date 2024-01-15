@@ -124,13 +124,13 @@
 		radius: 80,
 	});
 	const svg: string = avatar.toString();
-	const componentProps = withDefaults(defineProps<Props>(), {});
+	const props = defineProps<Props>();
 	const issueStatus: string = await assignStatus();
 
 	async function assignStatus(): Promise<string> {
-		if (componentProps.status === 'active') {
+		if (props.status === 'active') {
 			return 'Active';
-		} else if (componentProps.status === 'inactive') {
+		} else if (props.status === 'inactive') {
 			return 'Inactive';
 		} else {
 			return 'Closed';
