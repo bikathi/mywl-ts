@@ -152,11 +152,12 @@
 
 <script setup lang="ts">
 	import Image from '@tiptap/extension-image';
+	const userComment = ref('');
 	const editor = useEditor({
 		content: "<p>What's on your mind?...</p>",
 		extensions: [TiptapStarterKit.configure({ codeBlock: false }), Image],
 		onUpdate: (editor) => {
-			console.log(editor.editor.getHTML());
+			userComment.value = editor.editor.getHTML();
 		},
 	});
 </script>
