@@ -29,7 +29,11 @@ export default defineNuxtConfig({
     'nuxt-icon',
     '@vueuse/nuxt',
     '@samk-dev/nuxt-vcalendar',
+    "nuxt-tiptap-editor",
   ],
+  tiptap: {
+    prefix: "Tiptap", //prefix for Tiptap imports, composables not included
+  },
   pinia: {
     autoImports: [
       'defineStore', 'storeToRefs'
