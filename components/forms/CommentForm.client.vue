@@ -113,6 +113,23 @@
 							color="currentColor"
 							size="20" />
 					</button>
+					<button
+						@click="
+							editor
+								.chain()
+								.focus()
+								.setImage({
+									src: 'https://images.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg',
+									alt: 'Sample Alt Text',
+								})
+								.run()
+						"
+						:class="{ 'is-active': editor.isActive('blockquote') }">
+						<Icon
+							name="ic:outline-image"
+							color="currentColor"
+							size="20" />
+					</button>
 				</div>
 
 				<!-- Button Group -->
@@ -134,9 +151,10 @@
 </template>
 
 <script setup lang="ts">
+	import Image from '@tiptap/extension-image';
 	const editor = useEditor({
 		content: "<p>What's on your mind?...</p>",
-		extensions: [TiptapStarterKit],
+		extensions: [TiptapStarterKit.configure({ codeBlock: false }), Image],
 		onUpdate: (editor) => {
 			console.log(editor.editor.getHTML());
 		},
@@ -195,7 +213,10 @@
 		img {
 			max-width: 100%;
 			height: auto;
-			border: 10px solid;
+			border: 1px solid;
+			border-radius: 5px;
+			width: 95%;
+			height: auto;
 		}
 
 		blockquote {
