@@ -1,14 +1,9 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
   app: {
     head: {
       script: [
-        {
-          src: '/preline/dist/preline.js',
-          body: true,
-          defer: true
-        }
+        
       ]
     }
   },
@@ -25,24 +20,31 @@ export default defineNuxtConfig({
     },
   },
   plugins: [
-    { 
-      ssr: false, 
-      src: "~/plugins/preAppStart.js", 
-      mode: "client" 
-    },
+    "~/plugins/preline.client.ts",
+    "~/plugins/ofetch-interceptor.client.ts",
   ],
   css: ['~/assets/css/tailwind.css'],
   modules: [
     '@pinia/nuxt',
     'nuxt-icon',
     '@vueuse/nuxt',
+    '@samk-dev/nuxt-vcalendar',
+    "nuxt-tiptap-editor",
   ],
+  tiptap: {
+    prefix: "Tiptap", //prefix for Tiptap imports, composables not included
+  },
   pinia: {
     autoImports: [
       'defineStore', 'storeToRefs'
     ]
   },
-  runtimeConfig: {
-    jwtSecretKey: process.env.MYWL_JWT_SECRET
-  },
+  
+  routeRules: {
+    "/api/**": {
+      proxy: {
+        to: "http://127.0.0.1:8080/api/**",
+      }
+    }
+  }
 })

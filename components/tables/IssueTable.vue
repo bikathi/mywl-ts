@@ -1,5 +1,3 @@
-<script setup></script>
-
 <template>
 	<div class="flex flex-col">
 		<div class="-m-1.5 overflow-x-auto">
@@ -18,102 +16,77 @@
 								<th
 									scope="col"
 									class="issue-table-headers">
-									Participants
+									Technician / Handler
 								</th>
 								<th
 									scope="col"
 									class="issue-table-headers">
-									Client/ Affected
+									Status
 								</th>
 								<th
 									scope="col"
 									class="issue-table-headers">
-									Asignee
-								</th>
-								<th
-									scope="col"
-									class="issue-table-headers text-center">
-									Action
+									Opened By
 								</th>
 							</tr>
 						</thead>
 						<tbody
 							class="divide-y divide-gray-200 dark:divide-gray-700">
-							<tr v-for="a in 5">
+							<tr
+								v-for="a in 5"
+								class="group">
 								<td
-									class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-									Example Title
-								</td>
-								<td
-									class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-									<div class="flex -space-x-2">
-										<img
-											class="inline-block h-8 w-8 rounded-full ring-2 ring-white"
-											src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
-											alt="Image Description" />
-										<img
-											class="inline-block h-8 w-8 rounded-full ring-2 ring-white"
-											src="https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
-											alt="Image Description" />
-										<img
-											class="inline-block h-8 w-8 rounded-full ring-2 ring-white"
-											src="https://images.unsplash.com/photo-1541101767792-f9b2b1c4f127?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&&auto=format&fit=facearea&facepad=3&w=300&h=300&q=80"
-											alt="Image Description" />
-										<img
-											class="inline-block h-8 w-8 rounded-full ring-2 ring-white"
-											src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
-											alt="Image Description" />
-										<div class="relative inline-flex">
-											<button
-												class="comment-counter-button">
-												<span
-													class="font-medium leading-none"
-													>9+</span
-												>
-											</button>
-										</div>
-									</div>
-								</td>
-								<td
-									class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-									Solomon Xander
-								</td>
-								<td
-									class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-									Alex Joe
-								</td>
-								<td
-									class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-									<button
-										type="button"
-										class="table-action-buttons">
-										Delete
-									</button>
+									class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200 inline-flex items-center space-x-2">
 									<span
-										enter-class="text-gray-800 dark:text-gray-200">
-										|
+										v-html="svg"
+										class="w-8 h-8 rounded-full"></span>
+									<span class="inline-flex flex-col">
+										<NuxtLink
+											class="hover:underline underline-offset-2 group-hover:underline"
+											:to="{
+												name: 'issue-viewer',
+												params: {
+													id: id,
+												},
+											}"
+											>{{ title }}</NuxtLink
+										>
+										<span
+											class="text-xs font-bold text-gray-500 uppercase"
+											>by {{ clientName }}</span
+										>
 									</span>
-									<NuxtLink
-										:to="{
-											name: 'issue-viewer',
-											params: {
-												// TODO: modify this later
-												id: 1,
-											},
-										}"
-										type="button"
-										class="table-action-buttons">
-										View
-									</NuxtLink>
+								</td>
+								<td
+									class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+									{{ assignee }}
+								</td>
+								<td
+									class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 inline-flex items-center space-x-2">
 									<span
-										enter-class="text-gray-800 dark:text-gray-200">
-										|
+										class="w-3 h-3 block rounded-full bg-orange-400"
+										v-if="
+											issueStatus === 'Inactive'
+										"></span>
+									<span
+										class="w-3 h-3 block rounded-full bg-green-400"
+										v-else-if="
+											issueStatus === 'Active'
+										"></span>
+									<span
+										class="w-3 h-3 block rounded-full bg-purple-400"
+										v-else></span>
+									<span>{{ issueStatus }}</span>
+								</td>
+								<td
+									class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+									<span class="inline-flex flex-col">
+										<span>{{ openedBy }}</span>
+										<span
+											class="text-xs font-medium lowercase text-gray-500"
+											>on {{ date }}</span
+										>
 									</span>
-									<button
-										type="button"
-										class="table-action-buttons">
-										Close
-									</button>
 								</td>
 							</tr>
 						</tbody>
@@ -123,3 +96,48 @@
 		</div>
 	</div>
 </template>
+
+<script setup lang="ts">
+	import { createAvatar, type Result } from '@dicebear/core';
+	import { thumbs } from '@dicebear/collection';
+	export interface Props {
+		title: string;
+		clientName: string;
+		assignee: string;
+		status: string; // active, inactive, closed
+		id: string;
+		date: string;
+		openedBy: string;
+	}
+
+	// Avatar seed Strings
+	const seeds: readonly string[] = [
+		'Johnston',
+		'Anderson',
+		'Cleopatra',
+		'Georgina',
+		'Getrude',
+	];
+
+	const avatar: Result = createAvatar(thumbs, {
+		seed: selectRandomString(),
+		radius: 80,
+	});
+	const svg: string = avatar.toString();
+	const props = defineProps<Props>();
+	const issueStatus: string = await assignStatus();
+
+	async function assignStatus(): Promise<string> {
+		if (props.status === 'active') {
+			return 'Active';
+		} else if (props.status === 'inactive') {
+			return 'Inactive';
+		} else {
+			return 'Closed';
+		}
+	}
+
+	function selectRandomString(): string {
+		return seeds[Math.floor(Math.random() * seeds.length)];
+	}
+</script>

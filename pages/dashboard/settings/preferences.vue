@@ -1,9 +1,3 @@
-<script setup>
-	definePageMeta({
-		name: 'preferences-settings',
-	});
-</script>
-
 <template>
 	<main>
 		<div class="mb-4">
@@ -238,3 +232,9 @@
 		</div>
 	</main>
 </template>
+
+<script setup lang="ts">
+	definePageMeta({
+		name: 'preferences-settings',
+	});
+</script>

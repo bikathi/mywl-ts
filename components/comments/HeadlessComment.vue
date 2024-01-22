@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 	const componentProps = defineProps({
 		date: {
 			required: false,

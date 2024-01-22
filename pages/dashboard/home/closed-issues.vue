@@ -1,33 +1,16 @@
-<script setup>
-	definePageMeta({
-		name: 'open-issues',
-	});
-
-	const loadingMoreIssues = ref(false);
-	const loadMoreIssues = () => {
-		loadingMoreIssues.value = true;
-
-		setTimeout(() => {
-			// load more comments from the server
-			loadingMoreIssues.value = false;
-		}, 3000);
-	};
-</script>
-
 <template>
 	<main>
 		<div class="mb-4">
-			<h1 class="text-2xl font-bold mb-2">Insights</h1>
-			<!-- Component for showing issue metrics -->
-			<div
-				class="flex flex-col lg:flex-row space-x-0 lg:space-x-4 space-y-4 lg:space-y-0">
-				<IssueMetric />
-				<IssueMetric />
-				<IssueMetric />
-			</div>
-			<h1 class="text-2xl font-bold mt-4 mb-2">Open Issues</h1>
+			<h1 class="text-2xl font-bold mt-4 mb-2">Closed Issues</h1>
 			<!-- table to show the open issues -->
-			<IssueTable />
+			<IssueTable
+				assignee="John Doe"
+				client-name="Solomon Kane"
+				status="closed"
+				title="Example Title"
+				id="xfdgvb4thsmd"
+				date="28-11-2023"
+				opened-by="John Doe" />
 			<span
 				class="mb-4 text-sm font-extralight tracking-wider inline-flex items-center lg:hidden"
 				><Icon
@@ -54,3 +37,19 @@
 		</div>
 	</main>
 </template>
+
+<script setup lang="ts">
+	definePageMeta({
+		name: 'closed-issues',
+	});
+
+	const loadingMoreIssues: Ref<boolean> = ref(false);
+	const loadMoreIssues = (): void => {
+		loadingMoreIssues.value = true;
+
+		setTimeout(() => {
+			// load more comments from the server
+			loadingMoreIssues.value = false;
+		}, 3000);
+	};
+</script>
