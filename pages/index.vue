@@ -23,7 +23,7 @@
 							v-model="signInRequest.username"
 							required />
 					</div>
-					<div>
+					<div class="py-2">
 						<label
 							for="password"
 							class="block text-sm font-medium mb-2 dark:text-white"
@@ -47,9 +47,15 @@
 				</form>
 			</div>
 			<div
-				class="bg-gray-100 border-t rounded-b-xl py-4 px-3 dark:bg-slate-800 dark:border-gray-700">
+				class="bg-gray-100 border-t rounded-b-xl py-2 px-3 dark:bg-slate-800 dark:border-gray-700">
 				<p class="mt-1 text-sm text-gray-500 dark:text-gray-500">
 					If you have no account, kindly contact your administrator.
+					By loging in, you agree to use of cookies by the site.
+					<a
+						href="#"
+						class="text-blue-600 hover:text-blue-700"
+						>Learn More</a
+					>
 				</p>
 			</div>
 		</div>
