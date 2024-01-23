@@ -8,7 +8,8 @@
 					<input
 						type="text"
 						class="peer ps-8 block w-full bg-transparent border-t-transparent border-x-transparent text-sm focus:border-t-transparent focus:border-x-transparent focus:ring-0 dark:text-gray-400 border-none"
-						placeholder="Enter Search Term" />
+						placeholder="Enter Search Term"
+						v-model="searchQuery" />
 					<div
 						class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-2">
 						<Icon
@@ -60,4 +61,17 @@
 <script setup lang="ts">
 	const searchUsersLoading = ref(false);
 	const searchResults: Ref<object[]> = ref([]);
+	const searchQuery: Ref<string> = ref('');
+
+	watch(searchQuery, (newValue) => {
+		// TODO: figure out how to prevent running the script if search string is empty spaces or just empty
+		if (newValue !== '') {
+			console.log('new value: ', newValue);
+			setTimeout(() => searchUsers(searchQuery.value), 1500);
+		}
+	});
+
+	function searchUsers(searchQuery: string) {
+		console.log('search users event triggered');
+	}
 </script>
