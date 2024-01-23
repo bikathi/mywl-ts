@@ -130,7 +130,6 @@
 	const responseData: Ref<object[]> = ref([]);
 	const showTableLoader: Ref<boolean> = ref(false);
 	const showLoadMoreButton: Ref<boolean> = ref(false);
-	const { openToast } = useToast();
 
 	try {
 		showTableLoader.value = true;
@@ -159,6 +158,7 @@
 					},
 					async onResponse({ response }) {
 						loadingUsers.value = false;
+						await handleResponse(response);
 					},
 				},
 			);
