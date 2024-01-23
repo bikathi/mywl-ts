@@ -14,15 +14,24 @@
 						<Icon
 							name="cil:search"
 							color="rgb(107 114 128 / 0.8)"
-							size="17"
+							size="18"
 							class="flex-shrink" />
 					</div>
 				</div>
-				<span
-					v-if="searchUsersLoading"
-					class="animate-spin inline-block w-4 h-4 border-[1px] border-current border-t-transparent text-white rounded-full"
-					role="status"
-					aria-label="loading" />
+				<div>
+					<button title="filters">
+						<Icon
+							name="ion:filter-sharp"
+							color="currentColor"
+							size="18"
+							class="flex-shrink" />
+					</button>
+					<span
+						v-if="searchUsersLoading"
+						class="animate-spin inline-block w-4 h-4 border-[1px] border-current border-t-transparent text-white rounded-full"
+						role="status"
+						aria-label="loading" />
+				</div>
 			</div>
 			<div class="p-4 overflow-y-auto space-y-3">
 				<!-- <p
