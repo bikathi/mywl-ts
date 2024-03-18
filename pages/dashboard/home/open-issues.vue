@@ -81,7 +81,8 @@
 									:title="issue.issueTitle"
 									:id="issue.issueId"
 									:date="issue.dateReported"
-									:opened-by="`${issue.openedByUser.firstName} ${issue.openedByUser.otherName}`" />
+									:opened-by="`${issue.openedByUser.firstName} ${issue.openedByUser.otherName}`"
+									opened-status="true" />
 							</table>
 						</div>
 					</div>
