@@ -1,7 +1,7 @@
 <template>
 	<main>
 		<h1 class="text-4xl">
-			High latency in customer's WiFi after heavy rains.
+			{{ $route.query.title }}
 		</h1>
 		<div
 			class="flex flex-col md:flex-row space-y-2 md:space-y-0 my-1 md:items-center space-x-2 overflow-x-auto">
@@ -16,7 +16,9 @@
 						name="fad:open"
 						color="currentColor"
 						size="22" />
-					Open
+					{{
+						$route.query.issueOpened === 'false' ? 'Closed' : 'Open'
+					}}
 					<svg
 						class="hs-dropdown-open:rotate-180 w-4 h-4"
 						xmlns="http://www.w3.org/2000/svg"
@@ -36,8 +38,14 @@
 					aria-labelledby="hs-dropdown-with-icons">
 					<div class="py-2 first:pt-0 last:pb-0">
 						<button
+							v-if="$route.query.issueOpened === 'true'"
 							class="flex items-center gap-x-3.5 w-full py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700">
 							Close Issue
+						</button>
+						<button
+							v-else
+							class="flex items-center gap-x-3.5 w-full py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700">
+							Re-Open Issue
 						</button>
 						<button
 							class="flex items-center gap-x-3.5 w-full py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700">
@@ -52,12 +60,14 @@
 			</div>
 			<!-- end of discussion action button -->
 			<div>
-				<span class="issue-metadata">Bikathi Martin</span>
-				<span class="issue-metadata"> &middot; </span>
-				<span class="issue-metadata"> opened 21-10-2023 </span>
+				<span class="issue-metadata">{{ $route.query.openedBy }}</span>
 				<span class="issue-metadata"> &middot; </span>
 				<span class="issue-metadata">
-					20
+					opened {{ $route.query.openedDate }}
+				</span>
+				<span class="issue-metadata"> &middot; </span>
+				<span class="issue-metadata">
+					{{ totalComments }}
 					<Icon
 						name="mingcute:comment-fill"
 						color="currentColor"
@@ -111,15 +121,19 @@
 </template>
 
 <script setup lang="ts">
+	import { usePrincipal } from '~/stores/usePrincipal';
+
 	definePageMeta({
 		layout: 'dashboard-layout',
 		name: 'issue-viewer',
 	});
 
-	// reactive variables
 	const loadingMoreComments: Ref<boolean> = ref(false);
+	const totalComments: Ref<number> = ref(0);
+	const { openToast } = useToast();
+	const route = useRoute();
+	const { getDetails } = usePrincipal();
 
-	// functions
 	const loadMoreComments = async (): Promise<void> => {
 		loadingMoreComments.value = true;
 
@@ -128,4 +142,31 @@
 			loadingMoreComments.value = false;
 		}, 3000);
 	};
+
+	const reOpenIssue = async (): Promise<void> => {
+		try {
+			await useFetch(`/api/v1/issues/re-open`, {
+				method: 'PATCH',
+				server: false,
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: {
+					issueId: route.query.id,
+					openedByUserId: getDetails.userId,
+				},
+				async onResponse({ response }) {
+					if (response.status === 200) {
+						openToast('Issue re-opened successfully!', 'success');
+					} else throw new Error('Issue my not have been re-opened.');
+				},
+			});
+		} catch (error) {
+			console.log('Error occured when trying to re-open issue: ', error);
+			openToast('Issue re-opened successfully!', 'success');
+		}
+	};
+
+	const closeIssue = async (): Promise<void> => {};
 </script>
