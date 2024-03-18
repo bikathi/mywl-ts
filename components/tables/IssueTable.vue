@@ -14,6 +14,13 @@
 							params: {
 								id: id,
 							},
+							query: {
+								id: id,
+								title: title,
+								openedBy: openedBy,
+								openedDate: date,
+								issueOpened: openedStatus,
+							},
 						}"
 						>{{ title }}</NuxtLink
 					>
@@ -55,12 +62,14 @@
 <script setup lang="ts">
 	import { createAvatar, type Result } from '@dicebear/core';
 	import { thumbs } from '@dicebear/collection';
+	import type { LocationQueryValueRaw } from 'vue-router';
 	export interface Props {
 		title: string;
 		clientName: string;
 		technicianA: string;
 		technicianB: string;
 		status: string; // active, inactive, closed
+		openedStatus: string;
 		id: string;
 		date: string;
 		openedBy: string;
