@@ -11,7 +11,12 @@
 				<button
 					id="hs-dropdown-with-icons"
 					type="button"
-					class="hs-dropdown-toggle py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-full bg-green-600 text-white">
+					class="hs-dropdown-toggle py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-full text-white"
+					:class="
+						$route.query.issueOpened === 'true'
+							? 'bg-green-600'
+							: 'bg-red-600'
+					">
 					<Icon
 						name="fad:open"
 						color="currentColor"
@@ -39,22 +44,34 @@
 					<div class="py-2 first:pt-0 last:pb-0">
 						<button
 							v-if="$route.query.issueOpened === 'true'"
-							class="flex items-center gap-x-3.5 w-full py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700">
+							@click="closeIssue"
+							class="flex items-center justify-between gap-x-3.5 w-full py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700">
 							Close Issue
+							<div
+								v-if="closeIssueLoading"
+								class="animate-spin inline-block size-6 border-[2px] border-current border-t-transparent text-blue-600 rounded-full dark:text-blue-500"
+								role="status"
+								aria-label="loading"></div>
 						</button>
 						<button
 							v-else
+							@click="reOpenIssue"
 							class="flex items-center gap-x-3.5 w-full py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700">
 							Re-Open Issue
+							<div
+								v-if="reOpenIssueLoading"
+								class="animate-spin inline-block size-6 border-[2px] border-current border-t-transparent text-blue-600 rounded-full dark:text-blue-500"
+								role="status"
+								aria-label="loading"></div>
 						</button>
-						<button
+						<!-- <button
 							class="flex items-center gap-x-3.5 w-full py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700">
 							Mark as Innactive
-						</button>
-						<button
+						</button> -->
+						<!-- <button
 							class="flex items-center gap-x-3.5 w-full py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700">
 							Tag Someone
-						</button>
+						</button> -->
 					</div>
 				</div>
 			</div>
@@ -132,7 +149,10 @@
 	const totalComments: Ref<number> = ref(0);
 	const { openToast } = useToast();
 	const route = useRoute();
+	const router = useRouter();
 	const { getDetails } = usePrincipal();
+	const closeIssueLoading: Ref<boolean> = ref(false);
+	const reOpenIssueLoading: Ref<boolean> = ref(false);
 
 	const loadMoreComments = async (): Promise<void> => {
 		loadingMoreComments.value = true;
@@ -144,6 +164,7 @@
 	};
 
 	const reOpenIssue = async (): Promise<void> => {
+		reOpenIssueLoading.value = true;
 		try {
 			await useFetch(`/api/v1/issues/re-open`, {
 				method: 'PATCH',
@@ -158,6 +179,7 @@
 				},
 				async onResponse({ response }) {
 					if (response.status === 200) {
+						router.back();
 						openToast('Issue re-opened successfully!', 'success');
 					} else throw new Error('Issue my not have been re-opened.');
 				},
@@ -165,8 +187,38 @@
 		} catch (error) {
 			console.log('Error occured when trying to re-open issue: ', error);
 			openToast('Issue re-opened successfully!', 'success');
+		} finally {
+			reOpenIssueLoading.value = false;
 		}
 	};
 
-	const closeIssue = async (): Promise<void> => {};
+	const closeIssue = async (): Promise<void> => {
+		closeIssueLoading.value = true;
+		try {
+			await useFetch(`/api/v1/issues/close`, {
+				method: 'PATCH',
+				server: false,
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: {
+					issueId: route.query.id,
+					closedByUserId: getDetails.userId,
+				},
+				async onResponse({ response }) {
+					if (response.status === 200) {
+						openToast('Issue closed successfully!', 'success');
+						router.back();
+					} else
+						throw new Error('Issue my not have properly closed.');
+				},
+			});
+		} catch (error) {
+			console.log('Error occured when trying to re-open issue: ', error);
+			openToast('Failed to close issue. Try again!', 'error');
+		} finally {
+			closeIssueLoading.value = false;
+		}
+	};
 </script>
