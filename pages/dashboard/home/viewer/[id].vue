@@ -84,7 +84,7 @@
 				</span>
 				<span class="issue-metadata"> &middot; </span>
 				<span class="issue-metadata">
-					{{ totalComments }}
+					{{ existingComments.length }}
 					<Icon
 						name="mingcute:comment-fill"
 						color="currentColor"
@@ -94,26 +94,26 @@
 		</div>
 		<!-- Timeline -->
 		<div class="mt-2">
-			<HeadedComment
-				date="1 Aug, 2023"
-				heading="Has anyone had a client complain about this issue?"
-				content=" Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non voluptas, deleniti neque delectus autem, reiciendis quae quisquam debitis vitae, magnam illo esse nostrum odit itaque blanditiis assumenda rerum harum nihil! Blanditiis consequuntur architecto enim eveniet quam. Officia nesciunt quasi iste? Dicta, eius qui suscipit minus repellat aspernatur alias repellendus maiores laborum accusantium eligendi totam id soluta voluptate quod reiciendis amet."
-				actor="Bikathi Martin" />
-			<HeadlessComment
-				content="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non voluptas, deleniti neque delectus autem, reiciendis quae quisquam debitis vitae, magnam illo esse nostrum odit itaque blanditiis assumenda rerum harum nihil!"
-				actor="John Doe" />
-			<ActionComment
-				date="1 Aug, 2023"
-				title="Sample Action Comment"
-				actor="Poa Internet Bot" />
-			<HeadedComment
-				heading="Here's my two cents on that issue"
-				content=" Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non voluptas, deleniti neque delectus autem, reiciendis quae quisquam debitis vitae, magnam illo esse nostrum odit itaque blanditiis assumenda."
-				actor="Bikathi Martin" />
-			<HeadedComment
-				heading="Is it supposed to work like that"
-				content=" Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non voluptas, deleniti neque delectus autem, reiciendis quae quisquam debitis vitae, magnam illo esse nostrum odit itaque blanditiis assumenda."
-				actor="Bikathi Martin" />
+			<div
+				class="h-fit w-full"
+				v-for="(comment, i) in existingComments"
+				:key="i">
+				<HeadedComment
+					v-if="comment.commentType === 'headed'"
+					:date="formatDateHumanReadable(comment.commentTime)"
+					:heading="comment.commentTitle"
+					:content="comment.commentString"
+					:actor="`${comment.commenter.firstName} ${comment.commenter.otherName}`" />
+				<HeadlessComment
+					v-else-if="comment.commentType === 'headless'"
+					:content="comment.commentString"
+					:actor="`${comment.commenter.firstName} ${comment.commenter.otherName}`" />
+				<ActionComment
+					v-else-if="comment.commentType === 'action'"
+					:date="formatDateHumanReadable(comment.commentTime)"
+					:title="comment.commentTitle"
+					:actor="`${comment.commenter.firstName} ${comment.commenter.otherName}`" />
+			</div>
 		</div>
 		<!-- End Timeline -->
 
@@ -167,6 +167,8 @@
 	const reOpenIssueLoading: Ref<boolean> = ref(false);
 	const optionalCommentTitle: Ref<string | null> = ref(null);
 	const commentString: Ref<string | null> = ref(null);
+	const existingComments: Ref<object[]> = ref([]);
+	const page: Ref<number> = ref(0);
 
 	const loadMoreComments = async (): Promise<void> => {
 		loadingMoreComments.value = true;
@@ -176,6 +178,41 @@
 			loadingMoreComments.value = false;
 		}, 3000);
 	};
+
+	try {
+		loadingMoreComments.value = true;
+		await useFetch(`/api/v1/comments/get-list`, {
+			method: 'GET',
+			query: {
+				issueId: route.query.id,
+				page: page.value,
+			},
+			server: false,
+			headers: {
+				Accept: 'application/json',
+			},
+			async onResponse({ response }) {
+				console.log('onMounted response status: ', response.status);
+				console.log('onMounted response body: ', response._data.data);
+				if (response.status === 200 && response._data.data.length > 0) {
+					if (response._data.data.length >= 1) {
+						existingComments.value = response._data.data;
+						openToast(
+							'Loaded existing comments successfully!',
+							'info',
+						);
+					} else {
+						openToast('Currently no comments to show!', 'info');
+					}
+				} else throw new Error('Issue my not have been re-opened.');
+			},
+		});
+	} catch (error) {
+		console.log('Error occured when trying to re-open issue: ', error);
+		openToast('Issue re-opened successfully!', 'success');
+	} finally {
+		loadingMoreComments.value = false;
+	}
 
 	const reOpenIssue = async (): Promise<void> => {
 		reOpenIssueLoading.value = true;
@@ -290,5 +327,37 @@
 		const formattedDateTime = `${day}-${month}-${year}T${hours}:${minutes}`;
 
 		return formattedDateTime;
+	}
+
+	function formatDateHumanReadable(dateTimeString: string) {
+		// Extract the date part from the input string
+		const datePart = dateTimeString.split('T')[0];
+
+		// Split the date part into day, month, and year
+		const [day, month, year] = datePart.split('-');
+
+		// Define an array of month abbreviations
+		const monthAbbreviations = [
+			'JAN',
+			'FEB',
+			'MAR',
+			'APR',
+			'MAY',
+			'JUN',
+			'JUL',
+			'AUG',
+			'SEP',
+			'OCT',
+			'NOV',
+			'DEC',
+		];
+
+		// Convert the numeric month to its abbreviation
+		const monthAbbreviation = monthAbbreviations[parseInt(month, 10) - 1];
+
+		// Combine the parts into the desired human-readable format
+		const formattedDate = `${day} ${monthAbbreviation} ${year}`;
+
+		return formattedDate;
 	}
 </script>
