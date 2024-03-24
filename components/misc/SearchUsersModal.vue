@@ -66,12 +66,30 @@
 	watch(searchQuery, (newValue) => {
 		// TODO: figure out how to prevent running the script if search string is empty spaces or just empty
 		if (newValue !== '') {
-			console.log('new value: ', newValue);
 			setTimeout(() => searchUsers(searchQuery.value), 1500);
 		}
 	});
 
-	function searchUsers(searchQuery: string) {
-		console.log('search users event triggered');
+	async function searchUsers(searchQuery: string) {
+		searchUsersLoading.value = true;
+		try {
+			await $fetch(`/api/v1/accounts/search`, {
+				query: {
+					page: 0,
+					searchTerm: searchQuery,
+					byId: false,
+					byUsername: false,
+					byFirstOrOtherName: false,
+				},
+				method: 'GET',
+				headers: {
+					Accept: 'application/json',
+				},
+				async onResponse({ response }) {
+					searchUsersLoading.value = false;
+					// await handleResponse(response);
+				},
+			});
+		} catch (error) {}
 	}
 </script>
