@@ -6,7 +6,8 @@
 			maxlength="40"
 			id="input-label"
 			class="p-4 block text-sm w-full border rounded-md focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
-			placeholder="optional comment title(30 characters)" />
+			placeholder="optional comment title(30 characters)"
+			v-model="optionalTitle" />
 		<span
 			class="font-extralight tracking-wider inline-flex items-center text-xs sm:text-sm text-gray-400"
 			><Icon
@@ -137,7 +138,9 @@
 					<!-- Send Button -->
 					<button
 						type="button"
-						class="inline-flex flex-shrink-0 justify-center items-center h-8 w-fit px-3 py-1 text-white bg-blue-600 hover:bg-blue-500 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600 rounded-full">
+						@click="postUserComment"
+						:disabled="userComment === ''"
+						class="inline-flex flex-shrink-0 justify-center items-center h-8 w-fit px-3 py-1 text-white bg-blue-600 hover:bg-blue-500 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600 rounded-full disabled:bg-gray-500">
 						Post
 					</button>
 					<!-- End Send Button -->
@@ -153,6 +156,7 @@
 <script setup lang="ts">
 	import Image from '@tiptap/extension-image';
 	const userComment = ref('');
+	const optionalTitle: Ref<string | null> = ref(null);
 	const editor = useEditor({
 		content: "<p>What's on your mind?...</p>",
 		extensions: [TiptapStarterKit.configure({ codeBlock: false }), Image],
@@ -160,6 +164,11 @@
 			userComment.value = editor.editor.getHTML();
 		},
 	});
+	const emits = defineEmits(['postComment']);
+
+	const postUserComment = (): void => {
+		emits('postComment', optionalTitle.value, userComment.value);
+	};
 </script>
 
 <style lang="css">
@@ -212,8 +221,7 @@
 		}
 
 		img {
-			max-width: 100%;
-			height: auto;
+			max-width: 50%;
 			border: 1px solid;
 			border-radius: 5px;
 			width: 95%;

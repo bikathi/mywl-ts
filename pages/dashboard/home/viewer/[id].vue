@@ -133,7 +133,19 @@
 			</button>
 		</div>
 
-		<CommentForm />
+		<CommentForm
+			@post-comment="
+				async (optionalTitle: string | null, comment: string) => {
+					if (optionalTitle !== null) {
+						optionalCommentTitle = optionalTitle;
+					} else {
+						optionalCommentTitle = null;
+					}
+
+					commentString = comment;
+					await saveNewComment();
+				}
+			" />
 	</main>
 </template>
 
@@ -153,6 +165,8 @@
 	const { getDetails } = usePrincipal();
 	const closeIssueLoading: Ref<boolean> = ref(false);
 	const reOpenIssueLoading: Ref<boolean> = ref(false);
+	const optionalCommentTitle: Ref<string | null> = ref(null);
+	const commentString: Ref<string | null> = ref(null);
 
 	const loadMoreComments = async (): Promise<void> => {
 		loadingMoreComments.value = true;
@@ -202,10 +216,10 @@
 					Accept: 'application/json',
 					'Content-Type': 'application/json',
 				},
-				body: {
+				body: JSON.stringify({
 					issueId: route.query.id,
 					closedByUserId: getDetails.userId,
-				},
+				}),
 				async onResponse({ response }) {
 					if (response.status === 200) {
 						openToast('Issue closed successfully!', 'success');
@@ -221,4 +235,60 @@
 			closeIssueLoading.value = false;
 		}
 	};
+
+	const saveNewComment = async (): Promise<void> => {
+		openToast('Adding your comment. Please wait!', 'info');
+		try {
+			await useFetch(`/api/v1/comments/new-comment`, {
+				method: 'POST',
+				server: false,
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					issueId: route.query.id,
+					commentType: !optionalCommentTitle.value
+						? 'headless'
+						: 'headed',
+					commenterId: getDetails.userId,
+					commentTime: getCurrentDateTime(),
+					commentTitle:
+						optionalCommentTitle.value !== null
+							? optionalCommentTitle.value
+							: null,
+					comment: commentString.value,
+				}),
+				async onResponse({ response }) {
+					if (response.status === 200) {
+						openToast('Comment added successfully', 'success');
+						location.reload();
+					} else
+						throw new Error('Issue my not have properly closed.');
+				},
+			});
+		} catch (error) {
+			console.log('Error occured when trying to re-open issue: ', error);
+			openToast('Failed to add comment. Try again!', 'error');
+		} finally {
+			closeIssueLoading.value = false;
+		}
+	};
+
+	function getCurrentDateTime() {
+		// Create a new Date object for the current date and time
+		const now = new Date();
+
+		// Extract the day, month, year, hours, and minutes
+		const day = String(now.getDate()).padStart(2, '0');
+		const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
+		const year = now.getFullYear();
+		const hours = String(now.getHours()).padStart(2, '0');
+		const minutes = String(now.getMinutes()).padStart(2, '0');
+
+		// Combine the parts into the desired format
+		const formattedDateTime = `${day}-${month}-${year}T${hours}:${minutes}`;
+
+		return formattedDateTime;
+	}
 </script>
