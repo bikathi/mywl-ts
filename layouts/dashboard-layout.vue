@@ -42,9 +42,7 @@
 							</div>
 							<button
 								class="flex items-center gap-x-3.5 w-full py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700"
-								@click.prevent="
-									async () => await toggleThemeChange()
-								">
+								@click.prevent="toggleThemeChange">
 								<Icon
 									name="ri:lightbulb-flash-line"
 									color="currentColor"
@@ -60,22 +58,23 @@
 									size="20" />
 								Settings
 							</NuxtLink>
-							<a
-								class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700"
-								href="#">
+							<button
+								type="button"
+								@click="handleLogout"
+								class="flex items-center gap-x-3.5 w-full py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300 dark:focus:bg-gray-700">
 								<Icon
 									name="ri:logout-box-r-line"
 									color="currentColor"
 									size="20" />
 								Logout
-							</a>
+							</button>
 						</div>
 					</div>
 				</div>
 			</nav>
 			<nav class="flex space-x-2 px-2 lg:px-56 overflow-x-auto">
 				<NuxtLink
-					:to="{ name: 'issues-home' }"
+					:to="{ name: 'open-issues' }"
 					type="button"
 					class="hs-tab-active:font-semibold hs-tab-active:border-blue-600 hs-tab-active:text-blue-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:text-blue-500">
 					Issue Monitor
@@ -115,6 +114,24 @@
 	const { getDetails } = usePrincipal();
 	const username = ref('John Doe');
 	const email = ref('johndoe@mymail.com');
+	const { openToast } = useToast();
+	const authToken = useCookie('AUTH-TOKEN', {
+		watch: true,
+		httpOnly: false,
+		domain: 'localhost',
+		path: '/',
+	});
+	const csrfToken = useCookie('CSRF-TOKEN', {
+		watch: true,
+		httpOnly: false,
+		domain: 'localhost',
+		path: '/',
+	});
+	const { unsetDetails } = usePrincipal();
+	const router = useRouter();
+
+	username.value = `${getDetails.firstName} ${getDetails.otherName}`;
+	email.value = getDetails.email;
 
 	async function toggleThemeChange(): Promise<void> {
 		const htmlTag = document.documentElement;
@@ -126,14 +143,22 @@
 			htmlTag.classList.remove('light');
 			htmlTag.classList.add('dark');
 		}
-
-		// also save the user's prefference to their settings file
 	}
 
-	onMounted(() => {
-		username.value = `${getDetails.firstName} ${getDetails.otherName}`;
-		email.value = getDetails.email;
-	});
+	async function handleLogout() {
+		// delete the authToken and CSRF tokens
+		csrfToken.value = null;
+		authToken.value = null;
+
+		// delete the principal from local storage
+		await unsetDetails().then(() => {
+			router.push({
+				name: 'application-home',
+			});
+
+			openToast('Successfully logged you out!', 'success');
+		});
+	}
 </script>
 
 <style>

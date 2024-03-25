@@ -1,6 +1,6 @@
 <template>
 	<div class="overflow-x-hidden">
-		<div class="border-b pb-4 my-4 flex justify-between items-center">
+		<!-- <div class="border-b pb-4 my-4 flex justify-between items-center">
 			<h1 class="text-3xl">Issue Tracking</h1>
 			<button
 				type="button"
@@ -12,14 +12,14 @@
 					color="currentColor"
 					size="17" />
 			</button>
-		</div>
+		</div> -->
 		<!-- start of search modal -->
-		<SearchIssueModal />
+		<!-- <SearchIssueModal /> -->
 		<!-- End of search modal -->
 		<div class="flex flex-col lg:flex-row mt-3">
 			<div class="space-y-5 w-full lg:w-1/4 h-full">
 				<div class="w-full flex flex-col space-y-4 pl-0 lg:pl-3">
-					<NuxtLink :to="{ name: 'issues-home' }">General</NuxtLink>
+					<!-- <NuxtLink :to="{ name: 'issues-home' }">General</NuxtLink> -->
 					<NuxtLink :to="{ name: 'open-issues' }"
 						>Open Issues</NuxtLink
 					>
